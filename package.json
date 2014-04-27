@@ -1,0 +1,29 @@
+{
+  "name": "videojs-overlay",
+  "version": "0.0.0",
+  "author": "Brightcove",
+  "description": "A plugin to display simple overlays during video playback.",
+  "license": "Apache-2.0",
+  "keywords": [
+    "videojs",
+    "html5",
+    "flash",
+    "video",
+    "player"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "grunt-contrib-clean": "^0.4",
+    "grunt-contrib-concat": "^0.3",
+    "grunt-contrib-jshint": "^0.6",
+    "grunt-contrib-qunit": "^0.2",
+    "grunt-contrib-uglify": "^0.2",
+    "grunt-contrib-watch": "^0.4",
+    
+    "video.js": "^4.5",
+    "qunitjs": "^1.12"
+  },
+  "peerDependencies": {
+    "video.js": "^4.5"
+  }
+}
