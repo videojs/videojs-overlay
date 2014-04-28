@@ -5,6 +5,7 @@
   <title>Video.js Overlay</title>
 
   <link href="node_modules/video.js/dist/video-js/video-js.css" rel="stylesheet">
+  <link href="lib/videojs-overlay.css" rel="stylesheet">
 
   <style>
     body {
@@ -44,7 +45,18 @@
   <script src="lib/videojs-overlay.js"></script>
   <script>
     // fire up the plugin
-    videojs('video').overlay();
+    videojs('video').overlay({
+      content: '<strong>Default overlay content</strong>',
+      overlays: [{
+        content: 'An event-triggered overlay',
+        start: 'play',
+        end: 'pause'
+      }, {
+        start: 5,
+        end: 10,
+        align: 'bottom-right'
+      }]
+    });
   </script>
 </body>
 </html>
