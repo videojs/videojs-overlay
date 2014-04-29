@@ -25,5 +25,8 @@
   },
   "peerDependencies": {
     "video.js": "^4.5"
+  },
+  "scripts": {
+   "test": "grunt"
   }
 }
