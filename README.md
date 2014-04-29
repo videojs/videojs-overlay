@@ -1,5 +1,7 @@
 # Video.js Overlay
 
+[![Build Status](https://travis-ci.org/brightcove/videojs-overlay.svg?branch=master)](https://travis-ci.org/brightcove/videojs-overlay)
+
 A plugin to display simple overlays during video playback.
 
 ## Getting Started
