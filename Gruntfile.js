@@ -102,5 +102,5 @@ module.exports = function(grunt) {
                       'concat',
                       'uglify']);
   grunt.registerTask('package', ['default', 'copy:version', 'compress:package']);
-  grunt.registerTask('version', 'This should only be called by Team City!', ['release:' + releaseType ]);
+  grunt.registerTask('version', 'This task releases a new version of plugin!', ['release:' + releaseType ]);
 };
