@@ -11,6 +11,10 @@
     "video",
     "player"
   ],
+  "repository" : {
+    "type" : "git",
+    "url" : "http://github.com/brightcove/videojs-overlay.git"
+  },
   "dependencies": {},
   "devDependencies": {
     "grunt-contrib-clean": "^0.4",
