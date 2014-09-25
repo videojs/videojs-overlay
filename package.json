@@ -30,9 +30,6 @@
     "video.js": "^4.5",
     "qunitjs": "^1.12"
   },
-  "peerDependencies": {
-    "video.js": "^4.5"
-  },
   "scripts": {
     "test": "grunt"
   }
