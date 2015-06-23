@@ -1,5 +1,7 @@
 'use strict';
 
+var releaseType = process.env.RELEASE_TYPE || 'prerelease';
+
 module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
@@ -52,6 +54,29 @@ module.exports = function(grunt) {
         src: ['test/**/*.js']
       }
     },
+    copy: {
+      version: {
+        files: [
+          { expand: true, cwd: 'dist', src: ['*'], dest: 'dist/<%= pkg.version %>/' }
+        ]
+      }
+    },
+    compress: {
+      package: {
+        options: {
+          archive: '<%= pkg.name %>.tgz',
+          mode: 'tgz'
+        },
+        cwd: 'dist',
+        expand: true,
+        src: ['**']
+      }
+    },
+    release: {
+      options: {
+        npm: false
+      }
+    },
     watch: {
       gruntfile: {
         files: '<%= jshint.gruntfile.src %>',
@@ -68,12 +93,7 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.loadNpmTasks('grunt-contrib-concat');
-  grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-qunit');
-  grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-contrib-watch');
+  require('load-grunt-tasks')(grunt);
 
   grunt.registerTask('default',
                      ['clean',
@@ -81,4 +101,6 @@ module.exports = function(grunt) {
                       'qunit',
                       'concat',
                       'uglify']);
+  grunt.registerTask('package', ['default', 'copy:version', 'compress:package']);
+  grunt.registerTask('version', 'This task releases a new version of plugin!', ['release:' + releaseType ]);
 };
