@@ -238,7 +238,7 @@
     updateTime(0);
     strictEqual(player.el().querySelectorAll('.vjs-overlay').length,
                 4,
-                'shows three overlays');
+                'shows four overlays');
     strictEqual(player.el().querySelectorAll('.vjs-overlay b').length,
                 1,
                 'shows a default overlay');
@@ -251,6 +251,40 @@
     strictEqual(player.el().querySelectorAll('.vjs-overlay img').length,
                 1,
                 'shows a document fragment');
+  });
+
+  test('allows css class to be specified per overlay', function() {
+    var text = '<b>some text</b>',
+      html = '<p>overlay <a href="#">text</a></p>',
+      element = document.createElement('i'),
+      fragment = document.createDocumentFragment();
+    fragment.appendChild(document.createElement('img'));
+    player.overlay({
+      content: text,
+      overlays: [{
+        class: 'first-class-overlay',
+        start: 0,
+        end: 1
+      },{
+        class: 'second-class-overlay',
+        start: 0,
+        end: 1
+      }, {
+        start: 0,
+        end: 1
+      }]
+    });
+
+    updateTime(0);
+    strictEqual(player.el().querySelectorAll('.vjs-overlay').length,
+      3,
+      'shows three overlays');
+    strictEqual(player.el().querySelectorAll('.first-class-overlay').length,
+      1,
+      'shows an overlay with a custom class');
+    strictEqual(player.el().querySelectorAll('.second-class-overlay').length,
+      1,
+      'shows an overlay with a different custom class');
   });
 
   test('does not double add overlays that are triggered twice', function() {
