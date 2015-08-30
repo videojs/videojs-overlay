@@ -424,4 +424,20 @@
     ok(player.el().querySelector('.vjs-overlay.vjs-overlay-bottom-right'),
        'applies left class');
   });
+
+  test('removes time based overlays if the user seeks backward', function() {
+    player.overlay({
+      overlays: [{
+        start: 5,
+        end: 10
+      }]
+    });
+
+    // display the overlay
+    updateTime(6);
+    ok(player.el().querySelector('.vjs-overlay'), 'shows the overlay');
+    // seek backward to before the overlay
+    updateTime(4);
+    ok(!player.el().querySelector('.vjs-overlay'), 'hides the overlay');
+  });
 })(window, window.videojs, window.QUnit);
