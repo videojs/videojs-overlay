@@ -4,42 +4,52 @@
 (function(window, videojs, qunit) {
   'use strict';
 
-  var realIsHtmlSupported,
-      player,
+  var
+    player,
 
-      currentTime = 0,
-      // simulate the video element playing to the specified time
-      updateTime = function(seconds) {
-        currentTime = seconds;
-        player.trigger('timeupdate');
-      },
+    currentTime = 0,
+    // simulate the video element playing to the specified time
+    updateTime = function(seconds) {
+      currentTime = seconds;
+      player.trigger('timeupdate');
+    },
 
-      // local QUnit aliases
-      // http://api.qunitjs.com/
+    // local QUnit aliases
+    // http://api.qunitjs.com/
 
-      // module(name, {[setup][ ,teardown]})
-      module = qunit.module,
-      // test(name, callback)
-      test = qunit.test,
-      // ok(value, [message])
-      ok = qunit.ok,
-      // equal(actual, expected, [message])
-      equal = qunit.equal,
-      // strictEqual(actual, expected, [message])
-      strictEqual = qunit.strictEqual,
-      // deepEqual(actual, expected, [message])
-      deepEqual = qunit.deepEqual,
-      // notEqual(actual, expected, [message])
-      notEqual = qunit.notEqual,
-      // throws(block, [expected], [message])
-      throws = qunit.throws;
+    // module(name, {[setup][ ,teardown]})
+    module = qunit.module,
+    // test(name, callback)
+    test = qunit.test,
+    // ok(value, [message])
+    ok = qunit.ok,
+    // equal(actual, expected, [message])
+    equal = qunit.equal,
+    // strictEqual(actual, expected, [message])
+    strictEqual = qunit.strictEqual,
+    // deepEqual(actual, expected, [message])
+    deepEqual = qunit.deepEqual,
+    // notEqual(actual, expected, [message])
+    notEqual = qunit.notEqual,
+    // throws(block, [expected], [message])
+    throws = qunit.throws,
+    backup,
+    Flash = videojs.getComponent('Flash'),
+    Html5 = videojs.getComponent('Html5');
+
+  backup = {
+    Flash: {
+      isSupported: Flash.isSupported
+    },
+    Html5: {
+      isSupported: Html5.isSupported
+    }
+  };
 
   module('videojs-overlay', {
     setup: function() {
-      // force HTML support so the tests run in a reasonable
-      // environment under phantomjs
-      realIsHtmlSupported = videojs.Html5.isSupported;
-      videojs.Html5.isSupported = function() {
+      // Force HTML5/Flash support.
+      Html5.isSupported = Flash.isSupported = function() {
         return true;
       };
 
@@ -57,7 +67,9 @@
       player.overlay();
     },
     teardown: function() {
-      videojs.Html5.isSupported = realIsHtmlSupported;
+      // Restore original state of the techs.
+      Html5.isSupported = backup.Flash.isSupported;
+      Flash.isSupported = backup.Html5.setSource;
     }
   });
 

@@ -27,7 +27,7 @@
     "grunt-contrib-copy": "~0.5.0",
     "grunt-release": "0.7.0",
     "load-grunt-tasks": "~0.3.0",
-    "video.js": "^4.5",
+    "video.js": "v5.0.0-rc.63",
     "qunitjs": "^1.12"
   },
   "scripts": {
