@@ -111,7 +111,11 @@ const createTimeupdateListener = (player, property, callback, comparator) => {
     }
 
     while (overlay && comparator(overlay[property], time)) {
-      callback(player, overlay);
+
+      // Don't re-show overlays that are already showing. Fixes #8.
+      if (!overlay.el) {
+        callback(player, overlay);
+      }
       overlay = overlays[++earliest];
     }
 
