@@ -18,7 +18,7 @@ const showOverlay = (player, overlay) => {
   let el = document.createElement('div');
   let settings = player.overlay_.settings;
   let content = overlay.content || settings.content || '';
-  let align = settings.align || overlay.align;
+  let align = settings.align || overlay.align || 'top-left';
   let customClass = settings.class || overlay.class;
 
   videojs.addClass(el, 'vjs-overlay');

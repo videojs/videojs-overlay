@@ -18,12 +18,6 @@
     width: 33%;
   }
 
-  .vjs-overlay-left {
-    left: $nudge;
-    margin-top: $offset-v;
-    top: $middle;
-  }
-
   .vjs-overlay-top-left {
     top: $nudge;
     left: $nudge;
@@ -60,5 +54,11 @@
   .vjs-overlay-bottom-left {
     bottom: $bottom;
     left: $nudge;
+  }
+
+  .vjs-overlay-left {
+    left: $nudge;
+    margin-top: $offset-v;
+    top: $middle;
   }
 }
