@@ -1,3 +1,4 @@
-dist/
-test/
-*~
+!dist/
+!dist-test/
+!docs/
+!es5/

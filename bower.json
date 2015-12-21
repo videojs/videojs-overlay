@@ -1,0 +1,15 @@
+{
+  "name": "videojs-overlay",
+  "version": "0.1.1",
+  "author": "Brightcove, Inc.",
+  "license": "Apache-2.0",
+  "main": [
+    "dist/videojs-overlay.css",
+    "dist/videojs-overlay.min.js"
+  ],
+  "keywords": [
+    "videojs",
+    "videojs-plugin"
+  ]
+}
+

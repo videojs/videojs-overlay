@@ -1,36 +1,104 @@
 {
   "name": "videojs-overlay",
-  "version": "0.1.1",
-  "author": "Brightcove",
   "description": "A plugin to display simple overlays during video playback.",
+  "author": "Brightcove, Inc.",
   "license": "Apache-2.0",
+  "version": "0.1.1",
+  "main": "es5/plugin.js",
   "keywords": [
     "videojs",
-    "html5",
-    "flash",
-    "video",
-    "player"
+    "videojs-plugin"
   ],
-  "repository": {
-    "type": "git",
-    "url": "http://github.com/brightcove/videojs-overlay.git"
+  "browserify": {
+    "transform": [
+      "browserify-shim"
+    ]
   },
-  "dependencies": {},
+  "browserify-shim": {
+    "qunit": "global:QUnit",
+    "sinon": "global:sinon",
+    "video.js": "global:videojs"
+  },
+  "vjsstandard": {
+    "ignore": [
+      "dist",
+      "dist-test",
+      "docs",
+      "es5",
+      "test/karma",
+      "scripts"
+    ]
+  },
+  "scripts": {
+    "prebuild": "npm run clean",
+    "build": "npm-run-all -p build:*",
+    "build:css": "npm-run-all mkdirs build:css:sass build:css:bannerize",
+    "build:css:bannerize": "bannerize dist/videojs-overlay.css --banner=scripts/banner.ejs",
+    "build:css:sass": "node-sass --output-style=compressed --linefeed=lf src/plugin.scss -o dist &&  mv dist/plugin.css dist/videojs-overlay.css",
+    "build:js": "npm-run-all mkdirs build:js:babel build:js:browserify build:js:bannerize build:js:uglify",
+    "build:js:babel": "babel src -d es5",
+    "build:js:bannerize": "bannerize dist/videojs-overlay.js --banner=scripts/banner.ejs",
+    "build:js:browserify": "browserify . -s videojs-overlay -o dist/videojs-overlay.js",
+    "build:js:uglify": "uglifyjs dist/videojs-overlay.js --comments --mangle --compress -o dist/videojs-overlay.min.js",
+    "build:test": "npm-run-all mkdirs build:test:browserify",
+    "build:test:browserify": "browserify  `find test -name '*.test.js'` -t babelify -o dist-test/videojs-overlay.js",
+    "clean": "rm -rf dist dist-test es5",
+    "lint": "vjsstandard",
+    "mkdirs": "mkdir -p dist dist-test es5",
+    "prestart": "npm-run-all build",
+    "start": "npm-run-all -p start:* watch:*",
+    "start:serve": "static -a 0.0.0.0 -p 9999",
+    "pretest": "npm-run-all lint build:test",
+    "test": "karma start test/karma/detected.js",
+    "test:chrome": "npm run pretest && karma start test/karma/chrome.js",
+    "test:firefox": "npm run pretest && karma start test/karma/firefox.js",
+    "test:ie": "npm run pretest && karma start test/karma/ie.js",
+    "test:safari": "npm run pretest && karma start test/karma/safari.js",
+    "preversion": "./scripts/npm-preversion-for-bower.sh",
+    "version": "./scripts/npm-version-for-bower.sh",
+    "postversion": "./scripts/npm-postversion-for-bower.sh",
+    "watch": "npm run mkdirs && npm-run-all -p watch:*",
+    "watch:css": "node-sass --output-style=nested --linefeed=lf src/plugin.scss -o dist -w src && mv dist/plugin.css dist/videojs-overlay.css",
+    "watch:js": "watchify src/plugin.js -t babelify -v -o dist/videojs-overlay.js",
+    "watch:test": "watchify `find test -name '*.test.js'` -t babelify -o dist-test/videojs-overlay.js"
+  },
+  "dependencies": {
+    "video.js": "^5.0.0"
+  },
   "devDependencies": {
+    "babel": "^5.8.0",
+    "babelify": "^6.0.0",
+    "bannerize": "^1.0.0",
+    "browserify": "^11.0.0",
+    "browserify-shim": "^3.0.0",
+    "global": "^4.3.0",
     "grunt-contrib-clean": "^0.4",
+    "grunt-contrib-compress": "~0.6.1",
     "grunt-contrib-concat": "^0.3",
+    "grunt-contrib-copy": "~0.5.0",
     "grunt-contrib-jshint": "^0.6",
     "grunt-contrib-qunit": "^0.2",
     "grunt-contrib-uglify": "^0.2",
     "grunt-contrib-watch": "^0.4",
-    "grunt-contrib-compress": "~0.6.1",
-    "grunt-contrib-copy": "~0.5.0",
     "grunt-release": "0.7.0",
+    "karma": "^0.13.0",
+    "karma-browserify": "^4.4.0",
+    "karma-chrome-launcher": "^0.2.0",
+    "karma-detect-browsers": "^2.0.0",
+    "karma-firefox-launcher": "^0.1.0",
+    "karma-ie-launcher": "^0.2.0",
+    "karma-qunit": "^0.1.0",
+    "karma-safari-launcher": "^0.1.0",
     "load-grunt-tasks": "~0.3.0",
+    "lodash-compat": "^3.10.0",
+    "node-sass": "^3.4.0",
+    "node-static": "^0.7.0",
+    "npm-run-all": "~1.2.0",
+    "qunitjs": "^1.0.0",
+    "sinon": "^1.0.0",
+    "uglify-js": "^2.5.0",
     "video.js": "^4.5",
-    "qunitjs": "^1.12"
-  },
-  "scripts": {
-    "test": "grunt"
+    "videojs-standard": "^4.0.0",
+    "watchify": "^3.6.0"
   }
 }
