@@ -18,6 +18,13 @@ QUnit.test('the environment is sane', function(assert) {
 QUnit.module('videojs-overlay', {
 
   beforeEach() {
+
+    // Mock the environment's timers because certain things - particularly
+    // player readiness - are asynchronous in video.js 5. This MUST come
+    // before any player is created; otherwise, timers could get created
+    // with the actual timer methods!
+    this.clock = sinon.useFakeTimers();
+
     this.fixture = document.getElementById('qunit-fixture');
     this.video = document.createElement('video');
     this.fixture.appendChild(this.video);
@@ -43,19 +50,12 @@ QUnit.module('videojs-overlay', {
       assert.strictEqual(actual, expected, msg);
     };
 
-    // Mock the environment's timers because certain things - particularly
-    // player readiness - are asynchronous in video.js 5.
-    this.clock = sinon.useFakeTimers();
-
     this.player.overlay();
   },
 
   afterEach() {
-
-    // The clock _must_ be restored before disposing the player; otherwise,
-    // certain timeout listeners that happen inside video.js may throw errors.
-    this.clock.restore();
     this.player.dispose();
+    this.clock.restore();
   }
 });
 
