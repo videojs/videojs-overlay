@@ -4,12 +4,13 @@ module.exports = function(config) {
   var plugins = ['karma-qunit'];
 
   var addBrowserLauncher = function(browser) {
-    plugins.push('karma-' + browser + '-launcher');
+    plugins.push('karma-' + browser.toLowerCase() + '-launcher');
   };
 
   // On Travis CI, we can only run in Firefox.
   if (process.env.TRAVIS) {
     browsers = ['Firefox'];
+    browsers.forEach(addBrowserLauncher);
 
   // If specific browsers are requested on the command line, load their
   // launchers.
