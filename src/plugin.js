@@ -9,6 +9,14 @@ const defaults = {
 };
 
 /**
+ * Whether the number is an integer.
+ *
+ * @param  {Number} n
+ * @return {Boolean}
+ */
+const isInteger = n => Number.isInteger ? Number.isInteger(n) : n % 1 === 0;
+
+/**
  * Shows an overlay.
  *
  * @param  {Player} player
@@ -111,11 +119,7 @@ const createTimeupdateListener = (player, property, callback, comparator) => {
     }
 
     while (overlay && comparator(overlay[property], time)) {
-
-      // Don't re-show overlays that are already showing. Fixes #8.
-      if (!overlay.el) {
-        callback(player, overlay);
-      }
+      callback(player, overlay);
       overlay = overlays[++earliest];
     }
 
@@ -159,10 +163,10 @@ const plugin = function(options) {
 
     byTime: {
       end: settings.overlays
-        .filter(o => Number.isInteger(o.end))
+        .filter(o => isInteger(o.end))
         .sort((left, right) => left.end - right.end),
       start: settings.overlays
-        .filter(o => Number.isInteger(o.start))
+        .filter(o => isInteger(o.start))
         .sort((left, right) => left.start - right.start)
     },
 

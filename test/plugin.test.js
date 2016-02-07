@@ -34,13 +34,13 @@ QUnit.module('videojs-overlay', {
       this.player.trigger('timeupdate');
     };
 
-    this.assertOverlayCount = (assert, expected = 1) => {
+    this.assertOverlayCount = (assert, expected) => {
       let overlays = this.player.$$('.vjs-overlay');
-      let actual = overlays && overlays.length || 0;
+      let actual = overlays ? overlays.length : 0;
       let one = expected === 1;
       let msg = `${expected} overlay${one ? '' : 's'} exist${one ? 's' : ''}`;
 
-      assert.equal(actual, expected, msg);
+      assert.strictEqual(actual, expected, msg);
     };
 
     // Mock the environment's timers because certain things - particularly
