@@ -42,15 +42,16 @@ QUnit.module('videojs-overlay', {
     };
 
     this.assertOverlayCount = (assert, expected) => {
-      let overlays = this.player.$$('.vjs-overlay');
+      let overlays = Array.prototype.filter.call(
+        this.player.$$('.vjs-overlay'),
+        el => !videojs.hasClass(el, 'vjs-hidden')
+      );
       let actual = overlays ? overlays.length : 0;
       let one = expected === 1;
       let msg = `${expected} overlay${one ? '' : 's'} exist${one ? 's' : ''}`;
 
       assert.strictEqual(actual, expected, msg);
     };
-
-    this.player.overlay();
   },
 
   afterEach() {
@@ -60,13 +61,15 @@ QUnit.module('videojs-overlay', {
 });
 
 QUnit.test('registers itself with video.js', function(assert) {
-  assert.expect(1);
+  assert.expect(2);
 
   assert.strictEqual(
     Player.prototype.overlay,
     plugin,
     'videojs-overlay plugin was registered'
   );
+
+  assert.ok(videojs.getComponent('Overlay'), 'the Overlay component was registered');
 });
 
 QUnit.test('does not display overlays when none are configured', function(assert) {

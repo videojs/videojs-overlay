@@ -58,7 +58,7 @@
     "prepublish": "npm run build"
   },
   "dependencies": {
-    "video.js": "^5.6.0"
+    "video.js": "^5.7.0"
   },
   "devDependencies": {
     "babel": "^5.8.0",

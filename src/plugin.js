@@ -1,6 +1,8 @@
 import videojs from 'video.js';
 
 const defaults = {
+  align: 'top-left',
+  class: '',
   content: 'This overlay will show up while the video is playing',
   overlays: [{
     start: 'playing',
@@ -8,199 +10,252 @@ const defaults = {
   }]
 };
 
+const Component = videojs.getComponent('Component');
+
 /**
  * Whether the number is an integer.
  *
  * @param  {Number} n
  * @return {Boolean}
  */
-const isInteger = n => Number.isInteger ? Number.isInteger(n) : n % 1 === 0;
+const isInteger = n => n >= 0 && n % 1 === 0;
 
 /**
- * Shows an overlay.
+ * Whether a value is a string with no whitespace.
  *
- * @param  {Player} player
- * @param  {Object} overlay
+ * @param  {String} s
+ * @return {Boolean}
  */
-const showOverlay = (player, overlay) => {
-  let el = document.createElement('div');
-  let settings = player.overlay_.settings;
-  let content = overlay.content || settings.content || '';
-  let align = settings.align || overlay.align || 'top-left';
-  let customClass = settings.class || overlay.class;
-
-  videojs.addClass(el, 'vjs-overlay');
-
-  if (align) {
-    videojs.addClass(el, `vjs-overlay-${align}`);
-  }
-
-  if (customClass) {
-    videojs.addClass(el, customClass);
-  }
-
-  if (typeof content === 'string') {
-    el.innerHTML = content;
-  } else {
-    el.appendChild(content);
-  }
-
-  overlay.el = el;
-  player.el().appendChild(el);
-};
+const hasNoWhitespace = s => typeof s === 'string' && (/^\S+$/).test(s);
 
 /**
- * Function which handles any type of player event to show any
- * associated overlay(s).
+ * Overlay component.
  *
- * @param  {Event} event
+ * @class   Overlay
+ * @extends {videojs.Component}
  */
-const showOverlayListener = function(event) {
-  this.overlay_.byEvent[event.type].forEach(overlay => {
-    if (!overlay.el) {
-      showOverlay(this, overlay);
-    }
-  }, this);
-};
+class Overlay extends Component {
 
-/**
- * Hides an overlay.
- *
- * @param  {Player} player
- * @param  {Object} overlay
- */
-const hideOverlay = (player, overlay) => {
-  if (overlay.el) {
-    overlay.el.parentNode.removeChild(overlay.el);
-    overlay.el = null;
-  }
-};
+  constructor(player, options) {
+    super(player, options);
 
-/**
- * Function which handles any type of player event to remove any
- * associated overlay(s).
- *
- * @param  {Event} event
- */
-const hideOverlayListener = function(event) {
-  this.overlay_.byEvent[event.type].forEach(overlay => {
-    if (overlay.el) {
-      hideOverlay(this, overlay);
-    }
-  }, this);
-};
+    player.addChild(this);
 
-// returns a listener function that executes a callback when
-// the specified property of one of the overlays is positive
-// comapred with the current playback time (compareFunction == true)
+    ['start', 'end'].forEach(key => {
+      let value = this.options_[key];
 
-/**
- * Creates a timeupdate listener on a player.
- *
- * @param {Player}   player
- * @param {String}   property
- * @param {Function} callback
- * @param {Function} comparator
- */
-const createTimeupdateListener = (player, property, callback, comparator) => {
-  const overlays = player.overlay_.byTime[property];
-  let lastTime = 0;
-  let earliest = 0;
+      if (isInteger(value)) {
+        this[key + 'Event_'] = 'timeupdate';
+      } else if (hasNoWhitespace(value)) {
+        this[key + 'Event_'] = value;
 
-  player.overlay_.addListener('timeupdate', () => {
-    let overlay = overlays[earliest];
-    let time = player.currentTime();
+      // An overlay MUST have a start option. Otherwise, it's pointless.
+      } else if (key === 'start') {
+        throw new Error('invalid "start" option; expected number or string');
+      }
+    });
 
-    // Check if we've seeked backwards and rewind the earliest showing
-    // overlay as a result.
-    if (lastTime > time) {
-      earliest = 0;
-      overlay = overlays[earliest];
+    // If the start event is a timeupdate, we need to watch for rewinds (i.e.,
+    // when the user seeks backward).
+    if (this.startEvent_ === 'timeupdate') {
+      this.on(player, 'timeupdate', this.rewindListener_);
     }
 
-    while (overlay && comparator(overlay[property], time)) {
-      callback(player, overlay);
-      overlay = overlays[++earliest];
+    this.hide();
+  }
+
+  createEl() {
+    let options = this.options_;
+    let content = options.content;
+
+    let el = videojs.createEl('div', {
+      className: `vjs-overlay vjs-overlay-${options.align} ${options.class} vjs-hidden`
+    });
+
+    if (typeof content === 'string') {
+      el.innerHTML = content;
+    } else if (content instanceof DocumentFragment) {
+      el.appendChild(content);
+    } else {
+      videojs.appendContent(el, content);
     }
 
-    lastTime = time;
-  });
-};
+    return el;
+  }
+
+  /**
+   * Overrides the inherited method to perform some event binding
+   *
+   * @return {Overlay}
+   */
+  hide() {
+    super.hide();
+
+    // Overlays without an "end" are valid.
+    if (this.endEvent_) {
+      this.off(this.player(), this.endEvent_, this.endListener_);
+    }
+
+    this.on(this.player(), this.startEvent_, this.startListener_);
+
+    return this;
+  }
+
+  /**
+   * Determine whether or not the overlay should hide.
+   *
+   * @param  {Number} time
+   *         The current time reported by the player.
+   * @param  {String} type
+   *         An event type.
+   * @return {Boolean}
+   */
+  shouldHide_(time, type) {
+    let end = this.options_.end;
+
+    return isInteger(end) ? (time >= end) : end === type;
+  }
+
+  /**
+   * Overrides the inherited method to perform some event binding
+   *
+   * @return {Overlay}
+   */
+  show() {
+    super.show();
+    this.off(this.player(), this.startEvent_, this.startListener_);
+
+    // Overlays without an "end" are valid.
+    if (this.endEvent_) {
+      this.on(this.player(), this.endEvent_, this.endListener_);
+    }
+
+    return this;
+  }
+
+  /**
+   * Determine whether or not the overlay should show.
+   *
+   * @param  {Number} time
+   *         The current time reported by the player.
+   * @param  {String} type
+   *         An event type.
+   * @return {Boolean}
+   */
+  shouldShow_(time, type) {
+    let start = this.options_.start;
+    let end = this.options_.end;
+
+    if (isInteger(start)) {
+
+      if (isInteger(end)) {
+        return time >= start && time < end;
+
+      // In this case, the start is a number and the end is a string. We need
+      // to check whether or not the overlay has shown since the last seek.
+      } else if (!this.hasShownSinceSeek_) {
+        this.hasShownSinceSeek_ = true;
+        return time >= start;
+      }
+
+      // In this case, the start is a number and the end is a string, but
+      // the overlay has shown since the last seek. This means that we need
+      // to be sure we aren't re-showing it at a later time than it is
+      // scheduled to appear.
+      return Math.floor(time) === start;
+    }
+
+    return start === type;
+  }
+
+  /**
+   * Event listener that can trigger the overlay to show.
+   *
+   * @param  {Event} e
+   */
+  startListener_(e) {
+    let time = this.player().currentTime();
+
+    if (this.shouldShow_(time, e.type)) {
+      this.show();
+    }
+  }
+
+  /**
+   * Event listener that can trigger the overlay to show.
+   *
+   * @param  {Event} e
+   */
+  endListener_(e) {
+    let time = this.player().currentTime();
+
+    if (this.shouldHide_(time, e.type)) {
+      this.hide();
+    }
+  }
+
+  /**
+   * Event listener that can looks for rewinds - that is, backward seeks
+   * and may hide the overlay as needed.
+   *
+   * @param  {Event} e
+   */
+  rewindListener_(e) {
+    let time = this.player().currentTime();
+    let previous = this.previousTime_;
+    let start = this.options_.start;
+    let end = this.options_.end;
+
+    // Did we seek backward?
+    if (time < previous) {
+
+      // The overlay remains visible if two conditions are met: the end value
+      // MUST be an integer and the the current time indicates that the
+      // overlay should be visible.
+      if (isInteger(end) && !this.shouldShow_(time)) {
+        this.hasShownSinceSeek_ = false;
+        this.hide();
+
+      // If the end value is an event name, we cannot reliably decide if it
+      // should still be displayed based solely on time; so, we can only queue
+      // it up for showing if the seek took us to a point before the start
+      // time.
+      } else if (hasNoWhitespace(end) && time < start) {
+        this.hasShownSinceSeek_ = false;
+        this.hide();
+      }
+    }
+
+    this.previousTime_ = time;
+  }
+}
+
+videojs.registerComponent('Overlay', Overlay);
 
 /**
- * Will de-initialize the plugin on a player.
- *
- * @param  {Player} player
- */
-const teardown = (player) => {
-  player.overlay_.listeners.forEach(listener => {
-    player.off(listener.type, listener.fn);
-  });
-};
-
-/**
- * The plugin.
+ * Initialize the plugin.
  *
  * @function plugin
  * @param    {Object} [options={}]
- *           An object of options left to the plugin author to define.
  */
 const plugin = function(options) {
-  if (this.overlay_) {
-    teardown(this);
+
+  // De-initialize the plugin if it already has an array of overlays.
+  if (Array.isArray(this.overlays_)) {
+    this.overlays_.forEach(overlay => overlay.dispose());
   }
 
-  let settings = videojs.mergeOptions(defaults, options);
+  const settings = videojs.mergeOptions(defaults, options);
 
-  this.overlay_ = {
+  // We don't want to keep the original array of overlay options around
+  // because it doesn't make sense to pass it to each Overlay component.
+  const overlays = settings.overlays;
 
-    addListener: (type, fn) => {
-      this.on(type, fn);
-      this.overlay_.listeners.push({type, fn});
-    },
+  delete settings.overlays;
 
-    byEvent: {},
-
-    byTime: {
-      end: settings.overlays
-        .filter(o => isInteger(o.end))
-        .sort((left, right) => left.end - right.end),
-      start: settings.overlays
-        .filter(o => isInteger(o.start))
-        .sort((left, right) => left.start - right.start)
-    },
-
-    listeners: [],
-    settings
-  };
-
-  // Look for overlays that `start` or `end` on an event (represented by
-  // a string value).
-  settings.overlays.forEach(overlay => {
-    ['start', 'end'].forEach(key => {
-      let value = overlay[key];
-
-      if (typeof value !== 'string') {
-        return;
-      }
-
-      // Create an array to store overlays by event type and add a listener
-      // for that event type, so that it is only bound once.
-      if (!this.overlay_.byEvent[value]) {
-        this.overlay_.byEvent[value] = [];
-        this.overlay_.addListener(
-          value,
-          key === 'start' ? showOverlayListener : hideOverlayListener
-        );
-      }
-
-      this.overlay_.byEvent[value].push(overlay);
-    });
-  });
-
-  createTimeupdateListener(this, 'start', showOverlay, (value, time) => value <= time);
-  createTimeupdateListener(this, 'start', hideOverlay, (value, time) => value > time);
-  createTimeupdateListener(this, 'end', hideOverlay, (value, time) => value <= time);
+  this.overlays_ = overlays.map(
+    o => new Overlay(this, videojs.mergeOptions(settings, o))
+  );
 };
 
 videojs.plugin('overlay', plugin);
