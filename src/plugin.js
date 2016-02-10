@@ -1,9 +1,11 @@
+import tsmlj from 'tsmlj';
 import videojs from 'video.js';
 
 const defaults = {
   align: 'top-left',
   class: '',
   content: 'This overlay will show up while the video is playing',
+  debug: false,
   overlays: [{
     start: 'playing',
     end: 'paused'
@@ -55,11 +57,27 @@ class Overlay extends Component {
       }
     });
 
+    // video.js does not like components with multiple instances binding
+    // events to the player because it tracks them at the player level,
+    // not at the level of the object doing the binding. This could also be
+    // solved with Function.prototype.bind (but not videojs.bind because of
+    // its GUID magic), but the anonymous function approach avoids any issues
+    // caused by crappy libraries clobbering Function.prototype.bind.
+    // - https://github.com/videojs/video.js/issues/3097
+    ['endListener_', 'rewindListener_', 'startListener_'].forEach(name => {
+      this[name] = (e) => Overlay.prototype[name].call(this, e);
+    });
+
     // If the start event is a timeupdate, we need to watch for rewinds (i.e.,
     // when the user seeks backward).
     if (this.startEvent_ === 'timeupdate') {
       this.on(player, 'timeupdate', this.rewindListener_);
     }
+
+    this.debug(tsmlj`
+      created, listening to "${this.startEvent_}" for "start" and
+      "${this.endEvent_ || 'nothing'}" for "end"
+    `);
 
     this.hide();
   }
@@ -84,6 +102,28 @@ class Overlay extends Component {
   }
 
   /**
+   * Logs debug errors
+   * @param  {...[type]} args [description]
+   * @return {[type]}         [description]
+   */
+  debug(...args) {
+    if (!this.options_.debug) {
+      return;
+    }
+
+    let log = videojs.log;
+    let fn = log;
+
+    // Support `videojs.log.foo` calls.
+    if (log.hasOwnProperty(args[0]) && typeof log[args[0]] === 'function') {
+      fn = log[args.shift()];
+    }
+
+    args.unshift(`overlay#${this.id()}: `);
+    fn(...args);
+  }
+
+  /**
    * Overrides the inherited method to perform some event binding
    *
    * @return {Overlay}
@@ -91,8 +131,12 @@ class Overlay extends Component {
   hide() {
     super.hide();
 
+    this.debug('hidden');
+    this.debug(`bound \`startListener_\` to "${this.startEvent_}"`);
+
     // Overlays without an "end" are valid.
     if (this.endEvent_) {
+      this.debug(`unbound \`endListener_\` from "${this.endEvent_}"`);
       this.off(this.player(), this.endEvent_, this.endListener_);
     }
 
@@ -124,9 +168,12 @@ class Overlay extends Component {
   show() {
     super.show();
     this.off(this.player(), this.startEvent_, this.startListener_);
+    this.debug('shown');
+    this.debug(`unbound \`startListener_\` from "${this.startEvent_}"`);
 
     // Overlays without an "end" are valid.
     if (this.endEvent_) {
+      this.debug(`bound \`endListener_\` to "${this.endEvent_}"`);
       this.on(this.player(), this.endEvent_, this.endListener_);
     }
 
@@ -208,19 +255,27 @@ class Overlay extends Component {
 
     // Did we seek backward?
     if (time < previous) {
+      this.debug('rewind detected');
 
       // The overlay remains visible if two conditions are met: the end value
       // MUST be an integer and the the current time indicates that the
-      // overlay should be visible.
+      // overlay should NOT be visible.
       if (isInteger(end) && !this.shouldShow_(time)) {
+        this.debug(tsmlj`
+          hiding; ${end} is an integer and overlay should not show at this time
+        `);
         this.hasShownSinceSeek_ = false;
         this.hide();
 
-      // If the end value is an event name, we cannot reliably decide if it
-      // should still be displayed based solely on time; so, we can only queue
-      // it up for showing if the seek took us to a point before the start
-      // time.
+      // If the end value is an event name, we cannot reliably decide if the
+      // overlay should still be displayed based solely on time; so, we can
+      // only queue it up for showing if the seek took us to a point before
+      // the start time.
       } else if (hasNoWhitespace(end) && time < start) {
+        this.debug(tsmlj`
+          hiding; show point (${start}) is before now (${time}) and end
+          point (${end}) is an event
+        `);
         this.hasShownSinceSeek_ = false;
         this.hide();
       }
@@ -239,18 +294,17 @@ videojs.registerComponent('Overlay', Overlay);
  * @param    {Object} [options={}]
  */
 const plugin = function(options) {
+  const settings = videojs.mergeOptions(defaults, options);
 
   // De-initialize the plugin if it already has an array of overlays.
   if (Array.isArray(this.overlays_)) {
     this.overlays_.forEach(overlay => overlay.dispose());
   }
 
-  const settings = videojs.mergeOptions(defaults, options);
+  const overlays = settings.overlays;
 
   // We don't want to keep the original array of overlay options around
   // because it doesn't make sense to pass it to each Overlay component.
-  const overlays = settings.overlays;
-
   delete settings.overlays;
 
   this.overlays_ = overlays.map(

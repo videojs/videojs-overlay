@@ -58,6 +58,7 @@
     "prepublish": "npm run build"
   },
   "dependencies": {
+    "tsmlj": "^1.0.0",
     "video.js": "^5.7.0"
   },
   "devDependencies": {

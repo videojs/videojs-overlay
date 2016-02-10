@@ -21,6 +21,7 @@
       var player = window.player = videojs('videojs-overlay-player');
       player.overlay({
         content: 'Default overlay content',
+        debug: true,
         overlays: [{
           content: 'The video is playing!',
           start: 'play',
@@ -37,6 +38,9 @@
           start: 30,
           end: 45,
           align: 'bottom-right'
+        }, {
+          start: 20,
+          end: 'pause'
         }]
       });
     }(window, window.videojs));
