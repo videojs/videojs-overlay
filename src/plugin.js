@@ -305,7 +305,7 @@ const plugin = function(options) {
   delete settings.overlays;
 
   this.overlays_ = overlays.map(
-    o => this.addChild('Overlay', videojs.mergeOptions(settings, o))
+    o => this.addChild('overlay', videojs.mergeOptions(settings, o))
   );
 };
 
