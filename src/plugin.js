@@ -41,8 +41,6 @@ class Overlay extends Component {
   constructor(player, options) {
     super(player, options);
 
-    player.addChild(this);
-
     ['start', 'end'].forEach(key => {
       let value = this.options_[key];
 
@@ -119,8 +117,7 @@ class Overlay extends Component {
       fn = log[args.shift()];
     }
 
-    args.unshift(`overlay#${this.id()}: `);
-    fn(...args);
+    fn(...[`overlay#${this.id()}: `, ...args]);
   }
 
   /**
@@ -307,9 +304,9 @@ const plugin = function(options) {
   // because it doesn't make sense to pass it to each Overlay component.
   delete settings.overlays;
 
-  this.overlays_ = overlays.map(
-    o => new Overlay(this, videojs.mergeOptions(settings, o))
-  );
+  this.overlays_ = overlays.map(o => {
+    this.addChild('Overlay', videojs.mergeOptions(settings, o));
+  });
 };
 
 videojs.plugin('overlay', plugin);
