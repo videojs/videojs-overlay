@@ -304,10 +304,12 @@ const plugin = function(options) {
   // because it doesn't make sense to pass it to each Overlay component.
   delete settings.overlays;
 
-  this.overlays_ = overlays.map(o => {
-    this.addChild('Overlay', videojs.mergeOptions(settings, o));
-  });
+  this.overlays_ = overlays.map(
+    o => this.addChild('Overlay', videojs.mergeOptions(settings, o))
+  );
 };
+
+plugin.VERSION = '__VERSION__';
 
 videojs.plugin('overlay', plugin);
 
