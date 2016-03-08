@@ -1,7 +1,7 @@
 # CHANGELOG
 
 ## HEAD (Unreleased)
-_(none)_
+* Fixed #22, should not have been checking for integers only.
 
 --------------------
 
