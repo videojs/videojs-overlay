@@ -1,9 +1,12 @@
 # CHANGELOG
 
 ## HEAD (Unreleased)
-* Fixed #22, should not have been checking for integers only.
+_(none)_
 
 --------------------
+
+## 1.0.1 (2016-03-08)
+* Fixed #22, should not have been checking for integers only.
 
 ## 1.0.0 (2016-02-12)
 * Major refactoring of plugin to align with generator-videojs-plugin standards.
