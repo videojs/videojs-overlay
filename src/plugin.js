@@ -15,12 +15,14 @@ const defaults = {
 const Component = videojs.getComponent('Component');
 
 /**
- * Whether the number is an integer.
+ * Whether the value is a `Number`.
+ *
+ * Both `Infinity` and `-Infinity` are accepted, but `NaN` is not.
  *
  * @param  {Number} n
  * @return {Boolean}
  */
-const isInteger = n => n >= 0 && n % 1 === 0;
+const isNumber = n => typeof n === 'number' && n === n;
 
 /**
  * Whether a value is a string with no whitespace.
@@ -44,7 +46,7 @@ class Overlay extends Component {
     ['start', 'end'].forEach(key => {
       let value = this.options_[key];
 
-      if (isInteger(value)) {
+      if (isNumber(value)) {
         this[key + 'Event_'] = 'timeupdate';
       } else if (hasNoWhitespace(value)) {
         this[key + 'Event_'] = value;
@@ -154,7 +156,7 @@ class Overlay extends Component {
   shouldHide_(time, type) {
     let end = this.options_.end;
 
-    return isInteger(end) ? (time >= end) : end === type;
+    return isNumber(end) ? (time >= end) : end === type;
   }
 
   /**
@@ -190,9 +192,9 @@ class Overlay extends Component {
     let start = this.options_.start;
     let end = this.options_.end;
 
-    if (isInteger(start)) {
+    if (isNumber(start)) {
 
-      if (isInteger(end)) {
+      if (isNumber(end)) {
         return time >= start && time < end;
 
       // In this case, the start is a number and the end is a string. We need
@@ -257,7 +259,7 @@ class Overlay extends Component {
       // The overlay remains visible if two conditions are met: the end value
       // MUST be an integer and the the current time indicates that the
       // overlay should NOT be visible.
-      if (isInteger(end) && !this.shouldShow_(time)) {
+      if (isNumber(end) && !this.shouldShow_(time)) {
         this.debug(tsmlj`
           hiding; ${end} is an integer and overlay should not show at this time
         `);
