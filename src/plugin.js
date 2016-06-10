@@ -297,7 +297,10 @@ const plugin = function(options) {
 
   // De-initialize the plugin if it already has an array of overlays.
   if (Array.isArray(this.overlays_)) {
-    this.overlays_.forEach(overlay => overlay.dispose());
+    this.overlays_.forEach(overlay => {
+      this.removeChild(overlay);
+      overlay.dispose();
+    });
   }
 
   const overlays = settings.overlays;
