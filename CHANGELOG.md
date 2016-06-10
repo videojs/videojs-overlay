@@ -5,6 +5,9 @@ _(none)_
 
 --------------------
 
+## 1.0.2 (2016-06-10)
+_(none)_
+
 ## 1.0.1 (2016-03-08)
 * Fixed #22, should not have been checking for integers only.
 
