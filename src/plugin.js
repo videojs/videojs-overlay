@@ -1,6 +1,6 @@
-/* global DocumentFragment */
 import tsmlj from 'tsmlj';
 import videojs from 'video.js';
+import window from 'global/window';
 
 const defaults = {
   align: 'top-left',
@@ -8,6 +8,7 @@ const defaults = {
   content: 'This overlay will show up while the video is playing',
   debug: false,
   showBackground: true,
+  attachToControlBar: false,
   overlays: [{
     start: 'playing',
     end: 'paused'
@@ -104,7 +105,7 @@ class Overlay extends Component {
 
     if (typeof content === 'string') {
       el.innerHTML = content;
-    } else if (content instanceof DocumentFragment) {
+    } else if (content instanceof window.DocumentFragment) {
       el.appendChild(content);
     } else {
       videojs.appendContent(el, content);
@@ -329,7 +330,9 @@ const plugin = function(options) {
 
     // Attach bottom aligned overlays to the control bar so
     // they will adjust positioning when the control bar minimizes
-    if (this.controlBar && mergeOptions.align.indexOf('bottom') !== -1) {
+    if (mergeOptions.attachToControlBar &&
+        this.controlBar &&
+        mergeOptions.align.indexOf('bottom') !== -1) {
       return this.controlBar.addChild('overlay', mergeOptions);
     }
 

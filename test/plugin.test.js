@@ -562,6 +562,7 @@ QUnit.test('attaches bottom aligned overlays to the controlBar', function(assert
   assert.expect(4);
 
   this.player.overlay({
+    attachToControlBar: true,
     overlays: [{
       start: 'start',
       align: 'bottom-left'
@@ -600,8 +601,36 @@ QUnit.test('attaches bottom aligned overlays to the controlBar', function(assert
   );
 });
 
-QUnit.test('can deinitialize the plugin on reinitialization', function(assert) {
+QUnit.test('attach only to player when attachToControlbar is false', function(assert) {
+  assert.expect(2);
+
   this.player.overlay({
+    attachToControlBar: false,
+    overlays: [{
+      start: 'start',
+      align: 'bottom-left'
+    }, {
+      start: 'start',
+      align: 'bottom'
+    }]
+  });
+
+  assert.notOk(
+    this.player.controlBar.$('.vjs-overlay.vjs-overlay-bottom-left'),
+    'bottom-left is not attached to control bar'
+  );
+
+  assert.notOk(
+    this.player.controlBar.$('.vjs-overlay.vjs-overlay-bottom'),
+    'bottom is not attached to control bar'
+  );
+});
+
+QUnit.test('can deinitialize the plugin on reinitialization', function(assert) {
+  assert.expect(3);
+
+  this.player.overlay({
+    attachToControlBar: true,
     overlays: [{
       start: 'start',
       align: 'bottom-left'
