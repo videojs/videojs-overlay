@@ -329,7 +329,7 @@ const plugin = function(options) {
 
     // Attach bottom aligned overlays to the control bar so
     // they will adjust positioning when the control bar minimizes
-    if (this.controlBar && mergeOptions.align.includes('bottom')) {
+    if (this.controlBar && mergeOptions.align.indexOf('bottom') !== -1) {
       return this.controlBar.addChild('overlay', mergeOptions);
     }
 
