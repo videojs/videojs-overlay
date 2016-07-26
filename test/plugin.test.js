@@ -521,3 +521,115 @@ QUnit.test('removes time based overlays if the user seeks backward', function(as
   this.updateTime(4);
   this.assertOverlayCount(assert, 0);
 });
+
+QUnit.test('applies background styling when showBackground is true', function(assert) {
+  assert.expect(1);
+
+  this.player.overlay({
+    overlays: [{
+      start: 'start',
+      showBackground: true
+    }]
+  });
+
+  this.player.trigger('start');
+
+  assert.ok(
+    this.player.$('.vjs-overlay.vjs-overlay-background'),
+    'applies background styling'
+  );
+});
+
+QUnit.test('doesn\'t apply background when showBackground is false', function(assert) {
+  assert.expect(1);
+
+  this.player.overlay({
+    overlays: [{
+      start: 'start',
+      showBackground: false
+    }]
+  });
+
+  this.player.trigger('start');
+
+  assert.notOk(
+    this.player.$('.vjs-overlay.vjs-overlay-background'),
+    'does not apply background styling'
+  );
+});
+
+QUnit.test('attaches bottom aligned overlays to the controlBar', function(assert) {
+  assert.expect(4);
+
+  this.player.overlay({
+    overlays: [{
+      start: 'start',
+      align: 'bottom-left'
+    }, {
+      start: 'start',
+      align: 'bottom'
+    }, {
+      start: 'start',
+      align: 'bottom-right'
+    }, {
+      start: 'start',
+      align: 'top-right'
+    }]
+  });
+
+  this.player.trigger('start');
+
+  assert.ok(
+    this.player.controlBar.$('.vjs-overlay.vjs-overlay-bottom-left'),
+    'bottom-left attaches to control bar'
+  );
+
+  assert.ok(
+    this.player.controlBar.$('.vjs-overlay.vjs-overlay-bottom'),
+    'bottom attaches to control bar'
+  );
+
+  assert.ok(
+    this.player.controlBar.$('.vjs-overlay.vjs-overlay-bottom-right'),
+    'bottom-right attaches to control bar'
+  );
+
+  assert.notOk(
+    this.player.controlBar.$('.vjs-overlay.vjs-overlay-top-right'),
+    'top-right is not attached to control bar'
+  );
+});
+
+QUnit.test('can deinitialize the plugin on reinitialization', function(assert) {
+  this.player.overlay({
+    overlays: [{
+      start: 'start',
+      align: 'bottom-left'
+    }, {
+      start: 'start',
+      align: 'top-right'
+    }]
+  });
+
+  this.player.overlay({
+    overlays: [{
+      start: 'start',
+      align: 'top-left'
+    }]
+  });
+
+  assert.notOk(
+    this.player.$('.vjs-overlay.vjs-overlay-bottom-left'),
+    'previous bottom-left aligned overlay removed'
+  );
+
+  assert.notOk(
+    this.player.$('.vjs-overlay.vjs-overlay-top-right'),
+    'previous top-right aligned overlay removed'
+  );
+
+  assert.ok(
+    this.player.$('.vjs-overlay.vjs-overlay-top-left'),
+    'new top-left overlay added'
+  );
+});
