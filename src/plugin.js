@@ -1,11 +1,14 @@
 import tsmlj from 'tsmlj';
 import videojs from 'video.js';
+import window from 'global/window';
 
 const defaults = {
   align: 'top-left',
   class: '',
   content: 'This overlay will show up while the video is playing',
   debug: false,
+  showBackground: true,
+  attachToControlBar: false,
   overlays: [{
     start: 'playing',
     end: 'paused'
@@ -22,7 +25,10 @@ const Component = videojs.getComponent('Component');
  * @param  {Number} n
  * @return {Boolean}
  */
+
+/* eslint-disable no-self-compare */
 const isNumber = n => typeof n === 'number' && n === n;
+/* eslint-enable no-self-compare */
 
 /**
  * Whether a value is a string with no whitespace.
@@ -86,13 +92,20 @@ class Overlay extends Component {
     let options = this.options_;
     let content = options.content;
 
+    let background = options.showBackground ? 'vjs-overlay-background' : '';
     let el = videojs.createEl('div', {
-      className: `vjs-overlay vjs-overlay-${options.align} ${options.class} vjs-hidden`
+      className: `
+        vjs-overlay
+        vjs-overlay-${options.align}
+        ${options.class}
+        ${background}
+        vjs-hidden
+      `
     });
 
     if (typeof content === 'string') {
       el.innerHTML = content;
-    } else if (content instanceof DocumentFragment) {
+    } else if (content instanceof window.DocumentFragment) {
       el.appendChild(content);
     } else {
       videojs.appendContent(el, content);
@@ -299,6 +312,9 @@ const plugin = function(options) {
   if (Array.isArray(this.overlays_)) {
     this.overlays_.forEach(overlay => {
       this.removeChild(overlay);
+      if (this.controlBar) {
+        this.controlBar.removeChild(overlay);
+      }
       overlay.dispose();
     });
   }
@@ -309,9 +325,19 @@ const plugin = function(options) {
   // because it doesn't make sense to pass it to each Overlay component.
   delete settings.overlays;
 
-  this.overlays_ = overlays.map(
-    o => this.addChild('overlay', videojs.mergeOptions(settings, o))
-  );
+  this.overlays_ = overlays.map(o => {
+    let mergeOptions = videojs.mergeOptions(settings, o);
+
+    // Attach bottom aligned overlays to the control bar so
+    // they will adjust positioning when the control bar minimizes
+    if (mergeOptions.attachToControlBar &&
+        this.controlBar &&
+        mergeOptions.align.indexOf('bottom') !== -1) {
+      return this.controlBar.addChild('overlay', mergeOptions);
+    }
+
+    return this.addChild('overlay', mergeOptions);
+  });
 };
 
 plugin.VERSION = '__VERSION__';

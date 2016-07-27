@@ -35,6 +35,24 @@ _This setting can be overridden by being set on individual overlay objects._
 
 Where to display overlays, by default. Assuming the included stylesheet is used, the following values are supported: `"top-left"`, `"top"`, `"top-right"`, `"right"`, `"bottom-right"`, `"bottom"`, `"bottom-left"`, `"left"`.
 
+#### `showBackground`
+
+__Type:__ `Boolean`
+__Default:__ `true`
+
+_This setting can be overridden by being set on individual overlay objects._
+
+Whether or not to include background styling & padding around the overlay.
+
+#### `attachToControlBar`
+
+__Type:__ `Boolean`
+__Default:__ `false`
+
+_This setting can be overridden by being set on individual overlay objects._
+
+If set to true, bottom aligned overlays will adjust positioning when the control bar minimizes. This has no effect on overlays that are not aligned to bottom, bottom-left, or bottom-right. For use with the default control bar, it may not work for custom control bars.
+
 #### `class`
 
 __Type:__ `String`
