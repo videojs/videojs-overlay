@@ -1,12 +1,13 @@
 # CHANGELOG
 
 ## HEAD (Unreleased)
-_(none)_
+* Fixed issue where max-width was being set on all overlays rather than only those showBackground=false.
 
 --------------------
 
 ## 1.1.0 (2016-07-27)
-_(none)_
+* Added showBackground option to show or hide the overlay background.
+* Added attachToControlBar option to allow bottom align control bars to move when the control bar minimizes.
 
 ## 1.0.2 (2016-06-10)
 _(none)_
@@ -20,4 +21,3 @@ _(none)_
 
 ## 0.1.0 (2014-04-29)
 * Initial release
-
