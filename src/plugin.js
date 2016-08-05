@@ -92,7 +92,7 @@ class Overlay extends Component {
     let options = this.options_;
     let content = options.content;
 
-    let background = options.showBackground ? 'vjs-overlay-background' : '';
+    let background = options.showBackground ? 'vjs-overlay-background' : 'vjs-overlay-no-background';
     let el = videojs.createEl('div', {
       className: `
         vjs-overlay
