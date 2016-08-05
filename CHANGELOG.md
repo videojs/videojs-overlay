@@ -1,9 +1,12 @@
 # CHANGELOG
 
 ## HEAD (Unreleased)
-* Fixed issue where max-width was being set on all overlays rather than only those showBackground=false.
+_(none)_
 
 --------------------
+
+## 1.1.1 (2016-08-05)
+* Fixed issue where max-width was being set on all overlays rather than only those showBackground=false.
 
 ## 1.1.0 (2016-07-27)
 * Added showBackground option to show or hide the overlay background.
