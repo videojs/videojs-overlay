@@ -75,6 +75,7 @@
     transform: translateY(-50%);
   }
 
+  // Fallback for IE8 and IE9
   .vjs-no-flex .vjs-overlay-left,
   .vjs-no-flex .vjs-overlay-center,
   .vjs-no-flex .vjs-overlay-right {
