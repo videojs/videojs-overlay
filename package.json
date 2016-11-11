@@ -9,6 +9,10 @@
     "videojs",
     "videojs-plugin"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/brightcove/videojs-overlay.git"
+  },
   "browserify": {
     "transform": [
       "browserify-shim",
