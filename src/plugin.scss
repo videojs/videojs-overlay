@@ -79,6 +79,7 @@
   .vjs-no-flex .vjs-overlay-left,
   .vjs-no-flex .vjs-overlay-center,
   .vjs-no-flex .vjs-overlay-right {
-    top: $offset-h;
+    margin-top: $offset-v;
   }
 }
+
