@@ -1,9 +1,12 @@
 # CHANGELOG
 
 ## HEAD (Unreleased)
-* Added Video.js 5 and 6 cross-compatibility.
+_(none)_
 
 --------------------
+
+## 1.1.2 (2017-02-03)
+* Added Video.js 5 and 6 cross-compatibility.
 
 ## 1.1.1 (2016-08-05)
 * Fixed issue where max-width was being set on all overlays rather than only those showBackground=false.
