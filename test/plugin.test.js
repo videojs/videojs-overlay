@@ -8,6 +8,9 @@ import plugin from '../src/plugin';
 
 const Player = videojs.getComponent('Player');
 
+// This is for cross-compatibility between Video.js 5 and 6.
+const dom = videojs.dom || videojs;
+
 QUnit.test('the environment is sane', function(assert) {
   assert.strictEqual(typeof Array.isArray, 'function', 'es5 exists');
   assert.strictEqual(typeof sinon, 'object', 'sinon exists');
@@ -44,7 +47,7 @@ QUnit.module('videojs-overlay', {
     this.assertOverlayCount = (assert, expected) => {
       let overlays = Array.prototype.filter.call(
         this.player.$$('.vjs-overlay'),
-        el => !videojs.dom.hasClass(el, 'vjs-hidden')
+        el => !dom.hasClass(el, 'vjs-hidden')
       );
       let actual = overlays ? overlays.length : 0;
       let one = expected === 1;

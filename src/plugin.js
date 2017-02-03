@@ -16,6 +16,9 @@ const defaults = {
 };
 
 const Component = videojs.getComponent('Component');
+
+// These are for cross-compatibility between Video.js 5 and 6.
+const dom = videojs.dom || videojs;
 const registerPlugin = videojs.registerPlugin || videojs.plugin;
 
 /**
@@ -94,7 +97,7 @@ class Overlay extends Component {
     let content = options.content;
 
     let background = options.showBackground ? 'vjs-overlay-background' : 'vjs-overlay-no-background';
-    let el = videojs.dom.createEl('div', {
+    let el = dom.createEl('div', {
       className: `
         vjs-overlay
         vjs-overlay-${options.align}
@@ -109,7 +112,7 @@ class Overlay extends Component {
     } else if (content instanceof window.DocumentFragment) {
       el.appendChild(content);
     } else {
-      videojs.dom.appendContent(el, content);
+      dom.appendContent(el, content);
     }
 
     return el;
