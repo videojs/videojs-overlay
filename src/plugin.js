@@ -16,6 +16,7 @@ const defaults = {
 };
 
 const Component = videojs.getComponent('Component');
+const registerPlugin = videojs.registerPlugin || videojs.plugin;
 
 /**
  * Whether the value is a `Number`.
@@ -93,7 +94,7 @@ class Overlay extends Component {
     let content = options.content;
 
     let background = options.showBackground ? 'vjs-overlay-background' : 'vjs-overlay-no-background';
-    let el = videojs.createEl('div', {
+    let el = videojs.dom.createEl('div', {
       className: `
         vjs-overlay
         vjs-overlay-${options.align}
@@ -108,7 +109,7 @@ class Overlay extends Component {
     } else if (content instanceof window.DocumentFragment) {
       el.appendChild(content);
     } else {
-      videojs.appendContent(el, content);
+      videojs.dom.appendContent(el, content);
     }
 
     return el;
@@ -342,6 +343,6 @@ const plugin = function(options) {
 
 plugin.VERSION = '__VERSION__';
 
-videojs.plugin('overlay', plugin);
+registerPlugin('overlay', plugin);
 
 export default plugin;

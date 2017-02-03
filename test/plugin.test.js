@@ -44,7 +44,7 @@ QUnit.module('videojs-overlay', {
     this.assertOverlayCount = (assert, expected) => {
       let overlays = Array.prototype.filter.call(
         this.player.$$('.vjs-overlay'),
-        el => !videojs.hasClass(el, 'vjs-hidden')
+        el => !videojs.dom.hasClass(el, 'vjs-hidden')
       );
       let actual = overlays ? overlays.length : 0;
       let one = expected === 1;
@@ -64,8 +64,8 @@ QUnit.test('registers itself with video.js', function(assert) {
   assert.expect(2);
 
   assert.strictEqual(
-    Player.prototype.overlay,
-    plugin,
+    typeof Player.prototype.overlay,
+    'function',
     'videojs-overlay plugin was registered'
   );
 
