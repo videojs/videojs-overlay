@@ -1,7 +1,7 @@
 # CHANGELOG
 
 ## HEAD (Unreleased)
-_(none)_
+* Added Video.js 5 and 6 cross-compatibility.
 
 --------------------
 
