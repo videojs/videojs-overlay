@@ -5,6 +5,9 @@ _(none)_
 
 --------------------
 
+## 1.1.3 (2017-02-27)
+* update travis to test vjs 5/6 (#46)
+
 ## 1.1.2 (2017-02-03)
 * Added Video.js 5 and 6 cross-compatibility.
 
