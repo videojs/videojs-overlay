@@ -1,7 +1,7 @@
 # CHANGELOG
 
 ## HEAD (Unreleased)
-_(none)_
+* fix: remove global browserify transforms, so parent packages don't break
 
 --------------------
 
