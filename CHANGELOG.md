@@ -1,9 +1,12 @@
 # CHANGELOG
 
 ## HEAD (Unreleased)
-_(none)_
+* fix: remove global browserify transforms, so parent packages don't break
 
 --------------------
+
+## 1.1.4 (2017-04-03)
+* fix: remove global browserify transforms, so parent packages don't break
 
 ## 1.1.3 (2017-02-27)
 * update travis to test vjs 5/6 (#46)
