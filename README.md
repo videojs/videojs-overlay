@@ -17,7 +17,7 @@ Once you've added the plugin script to your page, you can use it with any video:
 </script>
 ```
 
-There's also a [working example](index.html) of the plugin you can check out if you're having trouble.
+There's also a [working example](https://github.com/brightcove/videojs-overlay/blob/master/index.html) of the plugin you can check out if you're having trouble.
 
 ## Documentation
 

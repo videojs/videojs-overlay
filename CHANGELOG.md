@@ -1,9 +1,18 @@
 # CHANGELOG
 
 ## HEAD (Unreleased)
-_(none)_
+* fix: remove global browserify transforms, so parent packages don't break
 
 --------------------
+
+## 1.1.4 (2017-04-03)
+* fix: remove global browserify transforms, so parent packages don't break
+
+## 1.1.3 (2017-02-27)
+* update travis to test vjs 5/6 (#46)
+
+## 1.1.2 (2017-02-03)
+* Added Video.js 5 and 6 cross-compatibility.
 
 ## 1.1.1 (2016-08-05)
 * Fixed issue where max-width was being set on all overlays rather than only those showBackground=false.
