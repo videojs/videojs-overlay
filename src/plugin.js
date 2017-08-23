@@ -1,4 +1,3 @@
-import tsmlj from 'tsmlj';
 import videojs from 'video.js';
 import window from 'global/window';
 
@@ -17,7 +16,6 @@ const defaults = {
 
 const Component = videojs.getComponent('Component');
 
-// These are for cross-compatibility between Video.js 5 and 6.
 const dom = videojs.dom || videojs;
 const registerPlugin = videojs.registerPlugin || videojs.plugin;
 
@@ -54,7 +52,7 @@ class Overlay extends Component {
     super(player, options);
 
     ['start', 'end'].forEach(key => {
-      let value = this.options_[key];
+      const value = this.options_[key];
 
       if (isNumber(value)) {
         this[key + 'Event_'] = 'timeupdate';
@@ -84,20 +82,17 @@ class Overlay extends Component {
       this.on(player, 'timeupdate', this.rewindListener_);
     }
 
-    this.debug(tsmlj`
-      created, listening to "${this.startEvent_}" for "start" and
-      "${this.endEvent_ || 'nothing'}" for "end"
-    `);
+    this.debug(`created, listening to "${this.startEvent_}" for "start" and "${this.endEvent_ || 'nothing'}" for "end"`);
 
     this.hide();
   }
 
   createEl() {
-    let options = this.options_;
-    let content = options.content;
+    const options = this.options_;
+    const content = options.content;
 
-    let background = options.showBackground ? 'vjs-overlay-background' : 'vjs-overlay-no-background';
-    let el = dom.createEl('div', {
+    const background = options.showBackground ? 'vjs-overlay-background' : 'vjs-overlay-no-background';
+    const el = dom.createEl('div', {
       className: `
         vjs-overlay
         vjs-overlay-${options.align}
@@ -128,7 +123,7 @@ class Overlay extends Component {
       return;
     }
 
-    let log = videojs.log;
+    const log = videojs.log;
     let fn = log;
 
     // Support `videojs.log.foo` calls.
@@ -171,7 +166,7 @@ class Overlay extends Component {
    * @return {Boolean}
    */
   shouldHide_(time, type) {
-    let end = this.options_.end;
+    const end = this.options_.end;
 
     return isNumber(end) ? (time >= end) : end === type;
   }
@@ -206,8 +201,8 @@ class Overlay extends Component {
    * @return {Boolean}
    */
   shouldShow_(time, type) {
-    let start = this.options_.start;
-    let end = this.options_.end;
+    const start = this.options_.start;
+    const end = this.options_.end;
 
     if (isNumber(start)) {
 
@@ -237,7 +232,7 @@ class Overlay extends Component {
    * @param  {Event} e
    */
   startListener_(e) {
-    let time = this.player().currentTime();
+    const time = this.player().currentTime();
 
     if (this.shouldShow_(time, e.type)) {
       this.show();
@@ -250,7 +245,7 @@ class Overlay extends Component {
    * @param  {Event} e
    */
   endListener_(e) {
-    let time = this.player().currentTime();
+    const time = this.player().currentTime();
 
     if (this.shouldHide_(time, e.type)) {
       this.hide();
@@ -264,10 +259,10 @@ class Overlay extends Component {
    * @param  {Event} e
    */
   rewindListener_(e) {
-    let time = this.player().currentTime();
-    let previous = this.previousTime_;
-    let start = this.options_.start;
-    let end = this.options_.end;
+    const time = this.player().currentTime();
+    const previous = this.previousTime_;
+    const start = this.options_.start;
+    const end = this.options_.end;
 
     // Did we seek backward?
     if (time < previous) {
@@ -277,9 +272,7 @@ class Overlay extends Component {
       // MUST be an integer and the the current time indicates that the
       // overlay should NOT be visible.
       if (isNumber(end) && !this.shouldShow_(time)) {
-        this.debug(tsmlj`
-          hiding; ${end} is an integer and overlay should not show at this time
-        `);
+        this.debug(`hiding; ${end} is an integer and overlay should not show at this time`);
         this.hasShownSinceSeek_ = false;
         this.hide();
 
@@ -288,10 +281,7 @@ class Overlay extends Component {
       // only queue it up for showing if the seek took us to a point before
       // the start time.
       } else if (hasNoWhitespace(end) && time < start) {
-        this.debug(tsmlj`
-          hiding; show point (${start}) is before now (${time}) and end
-          point (${end}) is an event
-        `);
+        this.debug(`hiding; show point (${start}) is before now (${time}) and end point (${end}) is an event`);
         this.hasShownSinceSeek_ = false;
         this.hide();
       }
@@ -330,7 +320,7 @@ const plugin = function(options) {
   delete settings.overlays;
 
   this.overlays_ = overlays.map(o => {
-    let mergeOptions = videojs.mergeOptions(settings, o);
+    const mergeOptions = videojs.mergeOptions(settings, o);
 
     // Attach bottom aligned overlays to the control bar so
     // they will adjust positioning when the control bar minimizes
