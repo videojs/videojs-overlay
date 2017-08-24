@@ -24,7 +24,8 @@ env:
   - VJS=5
   - VJS=6
 addons:
-  firefox: latest
+  # Commented out until Firefox works on Travis/with Karma again.
+  # firefox: latest
   apt:
     sources:
     - google-chrome
