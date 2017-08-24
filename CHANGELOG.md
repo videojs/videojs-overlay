@@ -1,3 +1,19 @@
+<a name="2.0.0"></a>
+# [2.0.0](https://github.com/brightcove/videojs-overlay/compare/v1.1.3...v2.0.0) (2017-08-24)
+
+### Features
+
+* Fix vertical centre alignment and add align-center ([#38](https://github.com/brightcove/videojs-overlay/issues/38)) ([8649210](https://github.com/brightcove/videojs-overlay/commit/8649210))
+
+### Bug Fixes
+
+* Fix malformed README link ([#43](https://github.com/brightcove/videojs-overlay/issues/43)) ([c2b1315](https://github.com/brightcove/videojs-overlay/commit/c2b1315))
+* remove global browserify transforms, so parent packages don't break ([#48](https://github.com/brightcove/videojs-overlay/issues/48)) ([aa74853](https://github.com/brightcove/videojs-overlay/commit/aa74853))
+
+### Code Refactoring
+
+* Update to use generator v5 tooling. ([#51](https://github.com/brightcove/videojs-overlay/issues/51)) ([bfeff8c](https://github.com/brightcove/videojs-overlay/commit/bfeff8c))
+
 ## 1.1.4 (2017-04-03)
 * fix: remove global browserify transforms, so parent packages don't break
 
