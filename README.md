@@ -11,7 +11,7 @@ _Note_: This meaning of an "overlay" is distinct from that of a modal dialog, wh
 Once you've added the plugin script to your page, you can use it with any video:
 
 ```html
-<script src="videojs-overlay"></script>
+<script src="path/to/videojs-overlay.js"></script>
 <script>
   videojs(document.querySelector('video')).overlay();
 </script>

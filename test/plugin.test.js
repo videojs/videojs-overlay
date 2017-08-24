@@ -7,8 +7,6 @@ import videojs from 'video.js';
 import plugin from '../src/plugin';
 
 const Player = videojs.getComponent('Player');
-
-// This is for cross-compatibility between Video.js 5 and 6.
 const dom = videojs.dom || videojs;
 
 QUnit.test('the environment is sane', function(assert) {
@@ -45,13 +43,13 @@ QUnit.module('videojs-overlay', {
     };
 
     this.assertOverlayCount = (assert, expected) => {
-      let overlays = Array.prototype.filter.call(
+      const overlays = Array.prototype.filter.call(
         this.player.$$('.vjs-overlay'),
         el => !dom.hasClass(el, 'vjs-hidden')
       );
-      let actual = overlays ? overlays.length : 0;
-      let one = expected === 1;
-      let msg = `${expected} overlay${one ? '' : 's'} exist${one ? 's' : ''}`;
+      const actual = overlays ? overlays.length : 0;
+      const one = expected === 1;
+      const msg = `${expected} overlay${one ? '' : 's'} exist${one ? 's' : ''}`;
 
       assert.strictEqual(actual, expected, msg);
     };
@@ -167,7 +165,7 @@ QUnit.test(
   function(assert) {
     assert.expect(1);
 
-    let innerHTML = '<p>overlay <a href="#">text</a></p>';
+    const innerHTML = '<p>overlay <a href="#">text</a></p>';
 
     this.player.overlay({
       content: innerHTML,
@@ -190,7 +188,7 @@ QUnit.test(
 QUnit.test('an element can be used as the content of overlays', function(assert) {
   assert.expect(1);
 
-  let content = document.createElement('p');
+  const content = document.createElement('p');
 
   content.innerHTML = 'this is some text';
 
@@ -214,8 +212,8 @@ QUnit.test('an element can be used as the content of overlays', function(assert)
 QUnit.test('a DocumentFragment can be used as the content of overlays', function(assert) {
   assert.expect(1);
 
-  let fragment = document.createDocumentFragment();
-  let br = document.createElement('br');
+  const fragment = document.createDocumentFragment();
+  const br = document.createElement('br');
 
   fragment.appendChild(br);
 
@@ -239,10 +237,10 @@ QUnit.test('a DocumentFragment can be used as the content of overlays', function
 QUnit.test('allows content to be specified per overlay', function(assert) {
   assert.expect(5);
 
-  let text = '<b>some text</b>';
-  let html = '<p>overlay <a href="#">text</a></p>';
-  let element = document.createElement('i');
-  let fragment = document.createDocumentFragment();
+  const text = '<b>some text</b>';
+  const html = '<p>overlay <a href="#">text</a></p>';
+  const element = document.createElement('i');
+  const fragment = document.createDocumentFragment();
 
   fragment.appendChild(document.createElement('img'));
 
@@ -297,8 +295,8 @@ QUnit.test('allows content to be specified per overlay', function(assert) {
 QUnit.test('allows css class to be specified per overlay', function(assert) {
   assert.expect(3);
 
-  let text = '<b>some text</b>';
-  let fragment = document.createDocumentFragment();
+  const text = '<b>some text</b>';
+  const fragment = document.createDocumentFragment();
 
   fragment.appendChild(document.createElement('img'));
 
