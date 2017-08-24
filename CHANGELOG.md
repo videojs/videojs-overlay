@@ -1,10 +1,3 @@
-# CHANGELOG
-
-## HEAD (Unreleased)
-* fix: remove global browserify transforms, so parent packages don't break
-
---------------------
-
 ## 1.1.4 (2017-04-03)
 * fix: remove global browserify transforms, so parent packages don't break
 
