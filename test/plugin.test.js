@@ -28,6 +28,7 @@ QUnit.module('videojs-overlay', {
 
     this.fixture = document.getElementById('qunit-fixture');
     this.video = document.createElement('video');
+    this.video.controls = true;
     this.fixture.appendChild(this.video);
     this.player = videojs(this.video);
 
@@ -661,5 +662,152 @@ QUnit.test('can deinitialize the plugin on reinitialization', function(assert) {
   assert.ok(
     this.player.$('.vjs-overlay.vjs-overlay-top-left'),
     'new top-left overlay added'
+  );
+});
+
+QUnit.test('attach bottom overlay as first child when insertBefore is invalid', function(assert) {
+  assert.expect(1);
+
+  this.player.overlay({
+    insertBefore: 'InvalidComponent',
+    attachToControlBar: true,
+    overlays: [{
+      start: 'start',
+      align: 'bottom'
+    }]
+  });
+
+  this.player.trigger('start');
+
+  assert.equal(
+    this.player.$('.vjs-overlay.vjs-overlay-bottom'),
+    this.player.controlBar.el().firstChild,
+    'bottom attaches as first child of controlBar'
+  );
+});
+
+QUnit.test('attach top overlay as previous sibling when insertBefore is invalid', function(assert) {
+  assert.expect(1);
+
+  this.player.overlay({
+    insertBefore: 'InvalidComponent',
+    attachToControlBar: true,
+    overlays: [{
+      start: 'start',
+      align: 'top'
+    }]
+  });
+
+  this.player.trigger('start');
+
+  assert.equal(
+    this.player.$('.vjs-overlay.vjs-overlay-top'),
+    this.player.controlBar.el().previousSibling,
+    'top attaches as previous sibiling of controlBar'
+  );
+});
+
+QUnit.test('attach overlays when attachToControlBar is true', function(assert) {
+  assert.expect(4);
+
+  this.player.overlay({
+    attachToControlBar: true,
+    overlays: [{
+      start: 'start',
+      align: 'bottom'
+    }]
+  });
+
+  this.player.trigger('start');
+
+  assert.equal(
+    this.player.controlBar.$('.vjs-overlay.vjs-overlay-bottom'),
+    this.player.controlBar.el().firstChild,
+    'bottom attaches as first child of control bar'
+  );
+
+  this.player.overlay({
+    attachToControlBar: true,
+    overlays: [{
+      start: 'start',
+      align: 'top'
+    }]
+  });
+
+  this.player.trigger('start');
+
+  assert.equal(
+    this.player.$('.vjs-overlay.vjs-overlay-top'),
+    this.player.controlBar.el().previousSibling,
+    'top attaches as previous sibiling of controlBar'
+  );
+
+  this.player.overlay({
+    attachToControlBar: true,
+    insertBefore: 'RemainingTimeDisplay',
+    overlays: [{
+      start: 'start',
+      align: 'bottom'
+    }]
+  });
+
+  this.player.trigger('start');
+
+  assert.equal(
+    this.player.controlBar.$('.vjs-overlay.vjs-overlay-bottom'),
+    this.player.controlBar.remainingTimeDisplay.el().previousSibling,
+    'bottom attaches as previous sibiling of custom insertBefore'
+  );
+
+  this.player.overlay({
+    attachToControlBar: true,
+    insertBefore: 'RemainingTimeDisplay',
+    overlays: [{
+      start: 'start',
+      align: 'top'
+    }]
+  });
+
+  this.player.trigger('start');
+
+  assert.equal(
+    this.player.$('.vjs-overlay.vjs-overlay-top'),
+    this.player.controlBar.el().previousSibling,
+    'top attaches as previous sibiling of controlBar when using custom insertBefore'
+  );
+});
+
+QUnit.test('attach overlays as last child when no controls are present', function(assert) {
+  assert.expect(2);
+  this.player.controls(false);
+
+  this.player.overlay({
+    overlays: [{
+      start: 'start',
+      align: 'bottom'
+    }]
+  });
+
+  this.player.trigger('start');
+
+  assert.equal(
+    this.player.$('.vjs-overlay.vjs-overlay-bottom'),
+    this.player.el().lastChild,
+    'bottom attaches as last child of player'
+  );
+
+  this.player.overlay({
+    overlays: [{
+      start: 'start',
+      align: 'top'
+    }]
+  });
+
+  this.player.trigger('start');
+
+  assert.equal(
+    this.player.$('.vjs-overlay.vjs-overlay-top'),
+    this.player.el().lastChild,
+    'top attaches as last child of player'
   );
 });

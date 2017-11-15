@@ -8,6 +8,7 @@ const defaults = {
   debug: false,
   showBackground: true,
   attachToControlBar: false,
+  insertBefore: '',
   overlays: [{
     start: 'playing',
     end: 'paused'
@@ -322,15 +323,31 @@ const plugin = function(options) {
   this.overlays_ = overlays.map(o => {
     const mergeOptions = videojs.mergeOptions(settings, o);
 
-    // Attach bottom aligned overlays to the control bar so
-    // they will adjust positioning when the control bar minimizes
-    if (mergeOptions.attachToControlBar &&
-        this.controlBar &&
-        mergeOptions.align.indexOf('bottom') !== -1) {
-      return this.controlBar.addChild('overlay', mergeOptions);
+    if (!this.controls() || !this.controlBar) {
+      return this.addChild('overlay', mergeOptions);
     }
 
-    return this.addChild('overlay', mergeOptions);
+    if (mergeOptions.attachToControlBar && mergeOptions.align.indexOf('bottom') !== -1) {
+      const referenceChild = this.controlBar.getChild(mergeOptions.insertBefore) || this.controlBar.children()[0];
+
+      if (referenceChild) {
+        const controlBarChild = this.controlBar.addChild('overlay', mergeOptions);
+
+        this.controlBar.el().insertBefore(
+          controlBarChild.el(),
+          referenceChild.el()
+        );
+        return controlBarChild;
+      }
+    }
+
+    const playerChild = this.addChild('overlay', mergeOptions);
+
+    this.el().insertBefore(
+      playerChild.el(),
+      this.controlBar.el()
+    );
+    return playerChild;
   });
 };
 

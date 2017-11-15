@@ -53,6 +53,17 @@ _This setting can be overridden by being set on individual overlay objects._
 
 If set to true, bottom aligned overlays will adjust positioning when the control bar minimizes. This has no effect on overlays that are not aligned to bottom, bottom-left, or bottom-right. For use with the default control bar, it may not work for custom control bars.
 
+#### `insertBefore`
+
+__Type:__ `String`
+__Default:__ `""`
+
+_This setting can be overridden by being set on individual overlay objects._
+
+The `string` name of a ControlBar component. Requires `attachToControlBar` set to `true`.
+
+Overlays set to align `"bottom-right"`, `"bottom"`, or `"bottom-left"` are inserted before the chosen component. These bottom overlays are otherwise inserted before the first child component of the ControlBar while overlays using other alignments are inserted before the ControlBar component.
+
 #### `class`
 
 __Type:__ `String`
