@@ -10,10 +10,12 @@ import multiEntry from 'rollup-plugin-multi-entry';
 import resolve from 'rollup-plugin-node-resolve';
 
 export default {
-  moduleName: 'videojsOverlayTests',
-  entry: 'test/**/*.test.js',
-  dest: 'test/dist/bundle.js',
-  format: 'iife',
+  name: 'videojsOverlayTests',
+  input: 'test/**/*.test.js',
+  output: {
+    file: 'test/dist/bundle.js',
+    format: 'iife'
+  },
   external: [
     'qunit',
     'qunitjs',
@@ -44,6 +46,7 @@ export default {
       babelrc: false,
       exclude: 'node_modules/**',
       presets: [
+        'es3',
         ['es2015', {
           loose: true,
           modules: false
