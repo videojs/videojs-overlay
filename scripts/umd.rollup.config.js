@@ -10,11 +10,15 @@ import json from 'rollup-plugin-json';
 import resolve from 'rollup-plugin-node-resolve';
 
 export default {
-  moduleName: 'videojsOverlay',
-  entry: 'src/plugin.js',
-  dest: 'dist/videojs-overlay.js',
-  format: 'umd',
-  external: ['video.js'],
+  name: 'videojsOverlay',
+  input: 'src/plugin.js',
+  output: {
+    file: 'dist/videojs-overlay.js',
+    format: 'umd'
+  },
+  external: [
+    'video.js'
+  ],
   globals: {
     'video.js': 'videojs'
   },
@@ -33,6 +37,7 @@ export default {
       babelrc: false,
       exclude: 'node_modules/**',
       presets: [
+        'es3',
         ['es2015', {
           loose: true,
           modules: false

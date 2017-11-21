@@ -9,8 +9,15 @@ import babel from 'rollup-plugin-babel';
 import json from 'rollup-plugin-json';
 
 export default {
-  moduleName: 'videojsOverlay',
-  entry: 'src/plugin.js',
+  name: 'videojsOverlay',
+  input: 'src/plugin.js',
+  output: [{
+    file: 'dist/videojs-overlay.cjs.js',
+    format: 'cjs'
+  }, {
+    file: 'dist/videojs-overlay.es.js',
+    format: 'es'
+  }],
   external: [
     'global',
     'global/document',
@@ -27,6 +34,7 @@ export default {
       babelrc: false,
       exclude: 'node_modules/**',
       presets: [
+        'es3',
         ['es2015', {
           loose: true,
           modules: false
@@ -37,9 +45,5 @@ export default {
         'transform-object-assign'
       ]
     })
-  ],
-  targets: [
-    {dest: 'dist/videojs-overlay.cjs.js', format: 'cjs'},
-    {dest: 'dist/videojs-overlay.es.js', format: 'es'}
   ]
 };
