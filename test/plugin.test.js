@@ -665,12 +665,11 @@ QUnit.test('can deinitialize the plugin on reinitialization', function(assert) {
   );
 });
 
-QUnit.test('attach bottom overlay as first child when insertBefore is invalid', function(assert) {
+QUnit.test('attach bottom overlay as first child when attachToControlBar is invalid component', function(assert) {
   assert.expect(1);
 
   this.player.overlay({
-    insertBefore: 'InvalidComponent',
-    attachToControlBar: true,
+    attachToControlBar: 'InvalidComponent',
     overlays: [{
       start: 'start',
       align: 'bottom'
@@ -686,12 +685,11 @@ QUnit.test('attach bottom overlay as first child when insertBefore is invalid', 
   );
 });
 
-QUnit.test('attach top overlay as previous sibling when insertBefore is invalid', function(assert) {
+QUnit.test('attach top overlay as previous sibling when attachToControlBar is invalid component', function(assert) {
   assert.expect(1);
 
   this.player.overlay({
-    insertBefore: 'InvalidComponent',
-    attachToControlBar: true,
+    attachToControlBar: 'InvalidComponent',
     overlays: [{
       start: 'start',
       align: 'top'
@@ -743,8 +741,7 @@ QUnit.test('attach overlays when attachToControlBar is true', function(assert) {
   );
 
   this.player.overlay({
-    attachToControlBar: true,
-    insertBefore: 'RemainingTimeDisplay',
+    attachToControlBar: 'RemainingTimeDisplay',
     overlays: [{
       start: 'start',
       align: 'bottom'
@@ -756,12 +753,11 @@ QUnit.test('attach overlays when attachToControlBar is true', function(assert) {
   assert.equal(
     this.player.controlBar.$('.vjs-overlay.vjs-overlay-bottom'),
     this.player.controlBar.remainingTimeDisplay.el().previousSibling,
-    'bottom attaches as previous sibiling of custom insertBefore'
+    'bottom attaches as previous sibiling of attachToControlBar component'
   );
 
   this.player.overlay({
-    attachToControlBar: true,
-    insertBefore: 'RemainingTimeDisplay',
+    attachToControlBar: 'RemainingTimeDisplay',
     overlays: [{
       start: 'start',
       align: 'top'
@@ -773,7 +769,7 @@ QUnit.test('attach overlays when attachToControlBar is true', function(assert) {
   assert.equal(
     this.player.$('.vjs-overlay.vjs-overlay-top'),
     this.player.controlBar.el().previousSibling,
-    'top attaches as previous sibiling of controlBar when using custom insertBefore'
+    'top attaches as previous sibiling of controlBar when using attachToControlBar component'
   );
 });
 

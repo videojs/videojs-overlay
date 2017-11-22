@@ -8,7 +8,6 @@ const defaults = {
   debug: false,
   showBackground: true,
   attachToControlBar: false,
-  insertBefore: '',
   overlays: [{
     start: 'playing',
     end: 'paused'
@@ -322,13 +321,18 @@ const plugin = function(options) {
 
   this.overlays_ = overlays.map(o => {
     const mergeOptions = videojs.mergeOptions(settings, o);
+    const attachToControlBar = typeof mergeOptions.attachToControlBar === 'string' || mergeOptions.attachToControlBar === true;
 
     if (!this.controls() || !this.controlBar) {
       return this.addChild('overlay', mergeOptions);
     }
 
-    if (mergeOptions.attachToControlBar && mergeOptions.align.indexOf('bottom') !== -1) {
-      const referenceChild = this.controlBar.getChild(mergeOptions.insertBefore) || this.controlBar.children()[0];
+    if (attachToControlBar && mergeOptions.align.indexOf('bottom') !== -1) {
+      let referenceChild = this.controlBar.children()[0];
+
+      if (this.controlBar.getChild(mergeOptions.attachToControlBar) !== undefined) {
+        referenceChild = this.controlBar.getChild(mergeOptions.attachToControlBar);
+      }
 
       if (referenceChild) {
         const controlBarChild = this.controlBar.addChild('overlay', mergeOptions);
