@@ -53,6 +53,16 @@ QUnit.module('videojs-overlay', {
 
       assert.strictEqual(actual, expected, msg);
     };
+
+    this.assertOverlayEvents = {};
+
+    let self = this;
+    this.player.on(['overlay-shown', 'overlay-init', 'overlay-hidden'], (event) => { 
+      if (self.assertOverlayEvents.hasOwnProperty(event.type)){
+        self.assertOverlayEvents[event.type]++;
+      }
+    });
+
   },
 
   afterEach() {
@@ -662,4 +672,29 @@ QUnit.test('can deinitialize the plugin on reinitialization', function(assert) {
     this.player.$('.vjs-overlay.vjs-overlay-top-left'),
     'new top-left overlay added'
   );
+});
+
+QUnit.test('triggers overlay events', function(assert){
+
+  this.assertOverlayEvents = {
+    'overlay-hidden': 0,
+    'overlay-shown': 0,
+    'overlay-init': 0
+  };
+
+  assert.expect(3);
+
+  this.player.overlay({
+    overlays: [{
+      start: 'start',
+      align: 'bottom-left',
+      end: 3
+    }]
+  });
+
+  this.player.trigger('start');
+
+  assert.strictEqual(this.assertOverlayEvents['overlay-init'], 1);
+  assert.strictEqual(this.assertOverlayEvents['overlay-hidden'], 1);
+  assert.strictEqual(this.assertOverlayEvents['overlay-shown'], 1);
 });

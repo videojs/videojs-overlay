@@ -84,6 +84,8 @@ class Overlay extends Component {
 
     this.debug(`created, listening to "${this.startEvent_}" for "start" and "${this.endEvent_ || 'nothing'}" for "end"`);
 
+    this.player().trigger('overlay-init');
+
     this.hide();
   }
 
@@ -153,6 +155,8 @@ class Overlay extends Component {
 
     this.on(this.player(), this.startEvent_, this.startListener_);
 
+    this.player().trigger('overlay-hidden');
+
     return this;
   }
 
@@ -188,6 +192,8 @@ class Overlay extends Component {
       this.on(this.player(), this.endEvent_, this.endListener_);
     }
 
+    this.player().trigger("overlay-shown");
+  
     return this;
   }
 
