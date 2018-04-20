@@ -46,12 +46,16 @@ Whether or not to include background styling & padding around the overlay.
 
 #### `attachToControlBar`
 
-__Type:__ `Boolean`
+__Type:__ `Boolean`, `String`
 __Default:__ `false`
 
 _This setting can be overridden by being set on individual overlay objects._
 
-If set to true, bottom aligned overlays will adjust positioning when the control bar minimizes. This has no effect on overlays that are not aligned to bottom, bottom-left, or bottom-right. For use with the default control bar, it may not work for custom control bars.
+If set to `true` or a `string` value, bottom aligned overlays will adjust positioning when the control bar minimizes. This has no effect on overlays that are not aligned to bottom, bottom-left, or bottom-right. For use with the default control bar, it may not work for custom control bars.
+
+The value of `string` must be the name of a ControlBar component.
+
+Bottom aligned overlays will be inserted before the specified component. Otherwise, bottom aligned overlays are inserted before the first child component of the ControlBar. All other overlays are inserted before the ControlBar component.
 
 #### `class`
 
