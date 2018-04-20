@@ -1,3 +1,14 @@
+<a name="2.1.0"></a>
+# [2.1.0](https://github.com/brightcove/videojs-overlay/compare/v2.0.0...v2.1.0) (2018-04-20)
+
+### Features
+
+* Allow choosing the placement of overlay elements in the control bar. ([b8b0607](https://github.com/brightcove/videojs-overlay/commit/b8b0607))
+
+### Bug Fixes
+
+* Upgrade rollup to v0.52.x to fix build failures ([#60](https://github.com/brightcove/videojs-overlay/issues/60)) ([b0b3a5d](https://github.com/brightcove/videojs-overlay/commit/b0b3a5d))
+
 <a name="2.0.0"></a>
 # [2.0.0](https://github.com/brightcove/videojs-overlay/compare/v1.1.3...v2.0.0) (2017-08-24)
 
