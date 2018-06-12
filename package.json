@@ -17,7 +17,8 @@
   "vjsstandard": {
     "ignore": [
       "dist",
-      "docs"
+      "docs",
+      "test/dist"
     ]
   },
   "scripts": {
@@ -25,15 +26,15 @@
     "build": "npm-run-all -p build:*",
     "build:css": "postcss --verbose -o dist/videojs-overlay.css --config scripts/postcss.config.js src/plugin.css",
     "build:js": "rollup -c scripts/rollup.config.js",
-    "clean": "rimraf dist",
-    "postclean": "mkdirp dist",
+    "clean": "rimraf dist test/dist",
+    "postclean": "mkdirp dist test/dist",
     "docs": "npm-run-all docs:*",
     "docs:api": "jsdoc src -r -c scripts/jsdoc.json -d docs/api",
     "docs:toc": "doctoc README.md",
     "lint": "vjsstandard",
     "server": "karma start scripts/karma.conf.js --singleRun=false --auto-watch --no-browsers",
     "start": "npm-run-all -p server watch",
-    "pretest": "npm-run-all lint clean build:css",
+    "pretest": "npm-run-all lint build",
     "test": "karma start scripts/karma.conf.js",
     "preversion": "npm test",
     "version": "node scripts/version.js",
@@ -67,7 +68,6 @@
     "karma-firefox-launcher": "^1.1.0",
     "karma-ie-launcher": "^1.0.0",
     "karma-qunit": "^2.0.0",
-    "karma-rollup-preprocessor": "^6.0.0",
     "karma-safari-launcher": "^1.0.0",
     "mkdirp": "^0.5.1",
     "npm-run-all": "^4.1.2",
@@ -105,6 +105,10 @@
     "test/"
   ],
   "generator-videojs-plugin": {
-    "version": "6.0.5"
-  }
+    "version": "6.0.8"
+  },
+  "browserslist": [
+    "defaults",
+    "ie 11"
+  ]
 }
