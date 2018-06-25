@@ -10,10 +10,7 @@
     "videojs",
     "videojs-plugin"
   ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/brightcove/videojs-overlay.git"
-  },
+  "repository": "https://github.com/brightcove/videojs-overlay.git",
   "vjsstandard": {
     "ignore": [
       "dist",
@@ -47,7 +44,7 @@
   },
   "dependencies": {
     "global": "^4.3.2",
-    "video.js": "6.10.2 || ^7.0.3"
+    "video.js": "^6 || ^7"
   },
   "devDependencies": {
     "autoprefixer": "^8.6.0",
@@ -105,7 +102,7 @@
     "test/"
   ],
   "generator-videojs-plugin": {
-    "version": "6.0.8"
+    "version": "6.0.9"
   },
   "browserslist": [
     "defaults",
