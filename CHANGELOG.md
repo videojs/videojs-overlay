@@ -1,3 +1,10 @@
+<a name="2.1.1"></a>
+## [2.1.1](https://github.com/brightcove/videojs-overlay/compare/v2.1.0...v2.1.1) (2018-07-05)
+
+### Chores
+
+* update to generator v6 (#63) ([4ac2452](https://github.com/brightcove/videojs-overlay/commit/4ac2452)), closes [#63](https://github.com/brightcove/videojs-overlay/issues/63)
+
 <a name="2.1.0"></a>
 # [2.1.0](https://github.com/brightcove/videojs-overlay/compare/v2.0.0...v2.1.0) (2018-04-20)
 
