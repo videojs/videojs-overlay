@@ -1,10 +1,34 @@
-# Video.js Overlay
+# videojs-overlay
 
 [![Build Status](https://travis-ci.org/brightcove/videojs-overlay.svg?branch=master)](https://travis-ci.org/brightcove/videojs-overlay)
+[![Greenkeeper badge](https://badges.greenkeeper.io/brightcove/videojs-overlay.svg)](https://greenkeeper.io/)
+[![Slack Status](http://slack.videojs.com/badge.svg)](http://slack.videojs.com)
+
+[![NPM](https://nodei.co/npm/videojs-overlay.png?downloads=true&downloadRank=true)](https://nodei.co/npm/videojs-overlay/)
 
 A plugin to display simple overlays - similar to YouTube's "Annotations" feature in appearance - during video playback.
 
 _Note_: This meaning of an "overlay" is distinct from that of a modal dialog, which can overlay the entire player. This is built into video.js as [the `ModalDialog` component](http://docs.videojs.com/docs/api/modal-dialog.html).
+
+Maintenance Status: Stable
+
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+
+- [Getting Started](#getting-started)
+- [Documentation](#documentation)
+  - [Plugin Options](#plugin-options)
+    - [`align`](#align)
+    - [`showBackground`](#showbackground)
+    - [`attachToControlBar`](#attachtocontrolbar)
+    - [`class`](#class)
+    - [`content`](#content)
+    - [`overlays`](#overlays)
+  - [Examples](#examples)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 
 ## Getting Started
 
