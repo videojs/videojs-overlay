@@ -1,3 +1,14 @@
+<a name="2.1.2"></a>
+## [2.1.2](https://github.com/brightcove/videojs-overlay/compare/v2.1.1...v2.1.2) (2018-08-03)
+
+### Bug Fixes
+
+* babel the es dist, by updating the generator (#68) ([bd7f070](https://github.com/brightcove/videojs-overlay/commit/bd7f070)), closes [#68](https://github.com/brightcove/videojs-overlay/issues/68)
+
+### Chores
+
+* **package:** update dependencies, enable greenkeeper (#67) ([70afc00](https://github.com/brightcove/videojs-overlay/commit/70afc00)), closes [#67](https://github.com/brightcove/videojs-overlay/issues/67)
+
 <a name="2.1.1"></a>
 ## [2.1.1](https://github.com/brightcove/videojs-overlay/compare/v2.1.0...v2.1.1) (2018-07-05)
 
