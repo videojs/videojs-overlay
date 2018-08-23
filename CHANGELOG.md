@@ -1,3 +1,10 @@
+<a name="2.1.3"></a>
+## [2.1.3](https://github.com/brightcove/videojs-overlay/compare/v2.1.2...v2.1.3) (2018-08-23)
+
+### Chores
+
+* generator v7 (#73) ([449679e](https://github.com/brightcove/videojs-overlay/commit/449679e)), closes [#73](https://github.com/brightcove/videojs-overlay/issues/73)
+
 <a name="2.1.2"></a>
 ## [2.1.2](https://github.com/brightcove/videojs-overlay/compare/v2.1.1...v2.1.2) (2018-08-03)
 
