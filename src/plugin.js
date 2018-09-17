@@ -1,5 +1,6 @@
 import videojs from 'video.js';
 import window from 'global/window';
+import {version as VERSION} from '../package.json';
 
 const defaults = {
   align: 'top-left',
@@ -355,7 +356,7 @@ const plugin = function(options) {
   });
 };
 
-plugin.VERSION = '__VERSION__';
+plugin.VERSION = VERSION;
 
 registerPlugin('overlay', plugin);
 
