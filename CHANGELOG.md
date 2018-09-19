@@ -1,3 +1,15 @@
+<a name="2.1.4"></a>
+## [2.1.4](https://github.com/brightcove/videojs-overlay/compare/v2.1.3...v2.1.4) (2018-09-19)
+
+### Bug Fixes
+
+* Properly expose plugin version (#80) ([9c8822c](https://github.com/brightcove/videojs-overlay/commit/9c8822c)), closes [#80](https://github.com/brightcove/videojs-overlay/issues/80)
+* Remove the postinstall script to prevent install issues (#77) ([5edecf7](https://github.com/brightcove/videojs-overlay/commit/5edecf7)), closes [#77](https://github.com/brightcove/videojs-overlay/issues/77)
+
+### Chores
+
+* update to generator-videojs-plugin[@7](https://github.com/7).2.0 ([7e0b357](https://github.com/brightcove/videojs-overlay/commit/7e0b357))
+
 <a name="2.1.3"></a>
 ## [2.1.3](https://github.com/brightcove/videojs-overlay/compare/v2.1.2...v2.1.3) (2018-08-23)
 
