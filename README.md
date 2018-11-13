@@ -24,6 +24,9 @@ Maintenance Status: Stable
     - [`attachToControlBar`](#attachtocontrolbar)
     - [`class`](#class)
     - [`content`](#content)
+    - [`onReady`](#onready)
+    - [`onHide`](#onhide)
+    - [`onShow`](#onshow)
     - [`overlays`](#overlays)
   - [Examples](#examples)
 
@@ -98,6 +101,33 @@ __Default:__ `"This overlay will show up while the video is playing"`
 _This setting can be overridden by being set on individual overlay objects._
 
 The default HTML that the overlay includes.
+
+#### `onReady`
+
+__Type:__ `Function`
+__Default:__ `undefined`
+
+_This setting can be overridden by being set on individual overlay objects._
+
+A callback function to be called when the overlay is ready.
+
+#### `onHide`
+
+__Type:__ `Function`
+__Default:__ `undefined`
+
+_This setting can be overridden by being set on individual overlay objects._
+
+A callback function to be called when the overlay is hidden.
+
+#### `onShow`
+
+__Type:__ `Function`
+__Default:__ `undefined`
+
+_This setting can be overridden by being set on individual overlay objects._
+
+A callback function to be called when the overlay is shown.
 
 #### `overlays`
 
