@@ -62,7 +62,7 @@
     "postcss-cli": "^6.0.0",
     "rollup": "^0.67.3",
     "shx": "^0.3.2",
-    "sinon": "^6.1.5",
+    "sinon": "^7.2.4",
     "videojs-generate-karma-config": "~5.0.0",
     "videojs-generate-postcss-config": "~2.0.1",
     "videojs-generate-rollup-config": "^2.3.1",
