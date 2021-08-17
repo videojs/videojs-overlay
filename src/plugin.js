@@ -336,7 +336,10 @@ const plugin = function(options) {
       }
 
       if (referenceChild) {
-        const controlBarChild = this.controlBar.addChild('overlay', mergeOptions);
+        const referenceChildIndex = this.controlBar.children().findIndex(function(child) {
+          return child.id() === referenceChild.id();
+        });
+        const controlBarChild = this.controlBar.addChild('overlay', mergeOptions, referenceChildIndex);
 
         this.controlBar.el().insertBefore(
           controlBarChild.el(),
