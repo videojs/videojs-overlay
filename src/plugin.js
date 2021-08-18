@@ -336,15 +336,9 @@ const plugin = function(options) {
       }
 
       if (referenceChild) {
-        const referenceChildIndex = this.controlBar.children().findIndex(function(child) {
-          return child.id() === referenceChild.id();
-        });
+        const referenceChildIndex = this.controlBar.children().indexOf(referenceChild);
         const controlBarChild = this.controlBar.addChild('overlay', mergeOptions, referenceChildIndex);
 
-        this.controlBar.el().insertBefore(
-          controlBarChild.el(),
-          referenceChild.el()
-        );
         return controlBarChild;
       }
     }
