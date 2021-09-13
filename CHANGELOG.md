@@ -1,3 +1,18 @@
+<a name="2.1.5"></a>
+## [2.1.5](https://github.com/brightcove/videojs-overlay/compare/v2.1.4...v2.1.5) (2021-09-13)
+
+### Bug Fixes
+
+* qualityMenu button to left of playToggle (#118) ([952188e](https://github.com/brightcove/videojs-overlay/commit/952188e)), closes [#118](https://github.com/brightcove/videojs-overlay/issues/118)
+
+### Chores
+
+* **package:** update lint-staged to version 8.1.0 (#94) ([b3cee2f](https://github.com/brightcove/videojs-overlay/commit/b3cee2f)), closes [#94](https://github.com/brightcove/videojs-overlay/issues/94)
+* **package:** update npm-run-all/videojs-generator-verify for security ([9d2d40f](https://github.com/brightcove/videojs-overlay/commit/9d2d40f))
+* **package:** update videojs-generate-karma-config to version 5.0.0 (#93) ([4e9d161](https://github.com/brightcove/videojs-overlay/commit/4e9d161)), closes [#93](https://github.com/brightcove/videojs-overlay/issues/93)
+* **package:** update videojs-generate-rollup-config to version 2.3.1 (#95) ([dedba7c](https://github.com/brightcove/videojs-overlay/commit/dedba7c)), closes [#95](https://github.com/brightcove/videojs-overlay/issues/95)
+* **package:** update videojs-standard to version 8.0.2 (#96) ([b548b3b](https://github.com/brightcove/videojs-overlay/commit/b548b3b)), closes [#96](https://github.com/brightcove/videojs-overlay/issues/96)
+
 <a name="2.1.4"></a>
 ## [2.1.4](https://github.com/brightcove/videojs-overlay/compare/v2.1.3...v2.1.4) (2018-09-19)
 

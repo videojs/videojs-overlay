@@ -3,7 +3,7 @@
   "description": "A plugin to display simple overlays during video playback.",
   "author": "Brightcove, Inc.",
   "license": "Apache-2.0",
-  "version": "2.1.4",
+  "version": "2.1.5",
   "main": "dist/videojs-overlay.cjs.js",
   "module": "dist/videojs-overlay.es.js",
   "keywords": [
