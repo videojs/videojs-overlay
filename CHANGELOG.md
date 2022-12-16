@@ -1,3 +1,16 @@
+<a name="3.0.0"></a>
+# [3.0.0](https://github.com/brightcove/videojs-overlay/compare/v2.1.5...v3.0.0) (2022-12-16)
+
+### Chores
+
+* skip vjsverify es check ([e10a7b1](https://github.com/brightcove/videojs-overlay/commit/e10a7b1))
+* update build tooling to drop older browser support (#220) ([85fe717](https://github.com/brightcove/videojs-overlay/commit/85fe717)), closes [#220](https://github.com/brightcove/videojs-overlay/issues/220)
+
+
+### BREAKING CHANGES
+
+* This removes support for some older browsers such as IE 11
+
 <a name="2.1.5"></a>
 ## [2.1.5](https://github.com/brightcove/videojs-overlay/compare/v2.1.4...v2.1.5) (2021-09-13)
 
