@@ -38,7 +38,7 @@
     "watch:css": "npm run build:css -- -w",
     "watch:js": "npm run build:js -- -w",
     "posttest": "shx cat test/dist/coverage/text.txt",
-    "prepublishOnly": "npm run build && vjsverify"
+    "prepublishOnly": "npm run build && vjsverify --skip-es-check"
   },
   "dependencies": {
     "global": "^4.3.2",
