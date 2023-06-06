@@ -367,15 +367,17 @@ const plugin = function(options) {
    * @param {*} items
    */
   function add(items) {
-    items = [items];
-    self.overlays_ = self.overlays_.concat(mapOverlays(items));
-    // convert item/s to an array
-    // add the items to the list of existing overlays (this.overlays_)
-    // can you attachToControlBar individual overlays? doesn't seem like it based off of the tests in the plugin
+    if (!Array.isArray(items)) {
+      items = [items];
+    }
+
+    const addedOverlays = mapOverlays(items);
+
+    self.overlays_ = self.overlays_.concat(addedOverlays);
   }
 
   /**
-   *
+   *  Removing an overlay? not sure how it should work?? by index?
    */
   function remove() {
 
@@ -383,7 +385,8 @@ const plugin = function(options) {
 
   return {
     add,
-    remove
+    remove,
+    length: this.overlays_.length
   };
 };
 

@@ -808,10 +808,77 @@ QUnit.test('attach overlays as last child when no controls are present', functio
   );
 });
 
-QUnit.test('can add individual overlay using the `add` fn', function(assert) {
+QUnit.test('can add an individual overlay using the `add` fn', function(assert) {
+  assert.expect(2);
+  this.player.controls(false);
 
+  const overlay = this.player.overlay({
+    overlays: [{
+      start: 'start',
+      align: 'bottom'
+    }]
+  });
+
+  this.player.trigger('start');
+
+  assert.equal(
+    this.player.$('.vjs-overlay.vjs-overlay-bottom'),
+    this.player.el().lastChild,
+    'initial bottom overlay is attached as last child of player'
+  );
+
+  overlay.add({start: 'start', align: 'top'});
+
+  this.player.trigger('start');
+  assert.equal(
+    this.player.$('.vjs-overlay.vjs-overlay-top'),
+    this.player.el().lastChild,
+    'top gets added as last child of player'
+  );
+  // need to write the following test -> one overlay, then add one and verify it exists, then add another and check if exists.
+});
+
+QUnit.test('can add a list of overlays using the `add` fn', function(assert) {
+  assert.expect(2);
+  this.player.controls(false);
+
+  const overlay = this.player.overlay();
+
+  overlay.add([{start: 'start', align: 'top'}, {start: 'start', align: 'bottom'}]);
+
+  this.player.trigger('start');
+
+  assert.equal(
+    this.player.$('.vjs-overlay.vjs-overlay-bottom'),
+    this.player.el().lastChild,
+    'bottom gets added as last child of player'
+  );
+
+  assert.equal(
+    this.player.$('.vjs-overlay.vjs-overlay-top'),
+    this.player.el().lastChild.previousSibling,
+    'top gets added as second last child of player'
+  );
 });
 
 QUnit.test('can remove an overlay', function(assert) {
+  assert.expect(2);
+  this.player.controls(false);
 
+  const overlay = this.player.overlay({
+    overlays: [{
+      start: 'start',
+      align: 'bottom'
+    }]
+  });
+
+  assert.equal(
+    this.player.$('.vjs-overlay.vjs-overlay-bottom'),
+    this.player.el().lastChild,
+    'bottom gets added as last child of player'
+  );
+
+  overlay.remove();
+
+  assert.ok(1 === 2);
 });
