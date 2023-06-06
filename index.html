@@ -19,7 +19,7 @@
   <script>
     (function(window, videojs) {
       var player = window.player = videojs('videojs-overlay-player');
-      player.overlay({
+      var overlay = player.overlay({
         content: 'Default overlay content',
         debug: true,
         overlays: [{
@@ -43,6 +43,8 @@
           end: 'pause'
         }]
       });
+      overlay.add({content: "this is a new one", start: "play", end: "pause"});
+      overlay.remove()
     }(window, window.videojs));
   </script>
 </body>

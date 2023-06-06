@@ -807,3 +807,11 @@ QUnit.test('attach overlays as last child when no controls are present', functio
     'top attaches as last child of player'
   );
 });
+
+QUnit.test('can add individual overlay using the `add` fn', function(assert) {
+
+});
+
+QUnit.test('can remove an overlay', function(assert) {
+
+});
