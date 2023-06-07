@@ -809,7 +809,7 @@ QUnit.test('attach overlays as last child when no controls are present', functio
 });
 
 QUnit.test('can add an individual overlay using the `add` fn', function(assert) {
-  assert.expect(2);
+  assert.expect(3);
   this.player.controls(false);
 
   const overlay = this.player.overlay({
@@ -827,7 +827,9 @@ QUnit.test('can add an individual overlay using the `add` fn', function(assert) 
     'initial bottom overlay is attached as last child of player'
   );
 
-  overlay.add({start: 'start', align: 'top'});
+  const addedOverlay = overlay.add({content: 'newly added overlay', start: 'start', align: 'top'});
+
+  assert.equal(addedOverlay[0].options_.content, 'newly added overlay', 'added overlay object is returned by `add` fn');
 
   this.player.trigger('start');
   assert.equal(
@@ -843,7 +845,6 @@ QUnit.test('can add a list of overlays using the `add` fn', function(assert) {
 
   const overlay = this.player.overlay();
 
-  // test added overlays lenght and objects inside
   overlay.add([{start: 'start', align: 'top'}, {start: 'start', align: 'bottom'}]);
 
   this.player.trigger('start');
