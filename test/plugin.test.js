@@ -835,7 +835,6 @@ QUnit.test('can add an individual overlay using the `add` fn', function(assert) 
     this.player.el().lastChild,
     'top gets added as last child of player'
   );
-  // need to write the following test -> one overlay, then add one and verify it exists, then add another and check if exists.
 });
 
 QUnit.test('can add a list of overlays using the `add` fn', function(assert) {
@@ -844,6 +843,7 @@ QUnit.test('can add a list of overlays using the `add` fn', function(assert) {
 
   const overlay = this.player.overlay();
 
+  // test added overlays lenght and objects inside
   overlay.add([{start: 'start', align: 'top'}, {start: 'start', align: 'bottom'}]);
 
   this.player.trigger('start');
@@ -861,7 +861,35 @@ QUnit.test('can add a list of overlays using the `add` fn', function(assert) {
   );
 });
 
-QUnit.test('can remove an overlay', function(assert) {
+QUnit.test('can remove an overlay using the `remove` fn', function(assert) {
+  assert.expect(2);
+  this.player.controls(false);
+
+  const overlay = this.player.overlay({
+    overlays: [{
+      start: 'start',
+      align: 'bottom'
+    }, {
+      start: 'start',
+      align: 'top'
+    }]
+  });
+
+  assert.equal(
+    this.player.$('.vjs-overlay.vjs-overlay-bottom'),
+    this.player.el().lastChild.previousSibling,
+    'bottom gets added as second last child of player'
+  );
+
+  overlay.remove(overlay.overlays[0]);
+
+  assert.notOk(
+    this.player.$('.vjs-overlay.vjs-overlay-bottom'),
+    'bottom overlay has been removed'
+  );
+});
+
+QUnit.test('`remove` fn throws an error if an invalid overlay is passed into it', function(assert) {
   assert.expect(2);
   this.player.controls(false);
 
@@ -878,7 +906,7 @@ QUnit.test('can remove an overlay', function(assert) {
     'bottom gets added as last child of player'
   );
 
-  overlay.remove();
-
-  assert.ok(1 === 2);
+  assert.throws(() => {
+    overlay.remove(undefined);
+  }, Error, 'error is thrown with an invalid overlay');
 });

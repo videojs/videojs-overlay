@@ -358,13 +358,13 @@ const plugin = function(options) {
     });
   };
 
-  // convert this into a sep function that can be recalled?
   this.overlays_ = mapOverlays(overlays);
 
   /**
    * Adding a single or a list of overlays.
    *
    * @param {*} items
+   * @return {*} added overlays or smth like that
    */
   function add(items) {
     if (!Array.isArray(items)) {
@@ -374,19 +374,32 @@ const plugin = function(options) {
     const addedOverlays = mapOverlays(items);
 
     self.overlays_ = self.overlays_.concat(addedOverlays);
+
+    // return addedOverlays
+    return addedOverlays;
   }
 
   /**
-   *  Removing an overlay? not sure how it should work?? by index?
+   *  Given a reference to an overlay object, remove that corresponding object from
+   * this.overlays_
+   *
+   * @param {*} item
    */
-  function remove() {
+  function remove(item) {
+    const index = self.overlays_.indexOf(item);
 
+    if (index !== -1) {
+      item.el().parentNode.removeChild(item.el());
+      self.overlays_.splice(index, 1);
+    } else {
+      throw new Error('overlay object is invalid and cannot be removed');
+    }
   }
 
   return {
     add,
     remove,
-    length: this.overlays_.length
+    overlays: this.overlays_
   };
 };
 
