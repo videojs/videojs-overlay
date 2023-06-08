@@ -302,7 +302,6 @@ videojs.registerComponent('Overlay', Overlay);
  * @param    {Object} [options={}]
  */
 const plugin = function(options) {
-  // TODO is this the best way to be able to use this inside the add/remove fns?
   const self = this;
   const settings = videojs.mergeOptions(defaults, options);
 
@@ -359,31 +358,35 @@ const plugin = function(options) {
   };
 
   this.overlays_ = mapOverlays(overlays);
-
   /**
-   * Adding a single or a list of overlays.
+   * Adds one or more items to the existing list of overlays.
    *
-   * @param {*} items
-   * @return {*} added overlays or smth like that
+   * @param {Object|Array} item
+   *        An item (or an array of items) to be added as overlay/s
+   *
+   * @return {Array[Overlay]}
+   *         The array of overlay objects that were added
    */
-  function add(items) {
-    if (!Array.isArray(items)) {
-      items = [items];
+  function add(item) {
+    if (!Array.isArray(item)) {
+      item = [item];
     }
 
-    const addedOverlays = mapOverlays(items);
+    const addedOverlays = mapOverlays(item);
 
     self.overlays_ = self.overlays_.concat(addedOverlays);
 
-    // return addedOverlays
     return addedOverlays;
   }
 
   /**
-   *  Given a reference to an overlay object, remove that corresponding object from
-   * this.overlays_
    *
-   * @param {*} item
+   * @param {Overlay} item
+   *        An item to be removed from the array of overlays
+   *
+   * @throws {Error}
+   *        Item to remove must be present in the array of overlays
+   *
    */
   function remove(item) {
     const index = self.overlays_.indexOf(item);
@@ -392,7 +395,7 @@ const plugin = function(options) {
       item.el().parentNode.removeChild(item.el());
       self.overlays_.splice(index, 1);
     } else {
-      throw new Error('overlay object is invalid and cannot be removed');
+      throw new Error('overlay is invalid and cannot be removed');
     }
   }
 

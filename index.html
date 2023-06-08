@@ -44,7 +44,7 @@
         }]
       });
       const added = overlay.add({content: "this is a new one", start: "play", end: "pause"});
-      overlay.remove(added);
+      overlay.remove(added[0]);
     }(window, window.videojs));
   </script>
 </body>
