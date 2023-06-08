@@ -18,6 +18,11 @@ Maintenance Status: Stable
 
 - [Getting Started](#getting-started)
 - [Documentation](#documentation)
+  - [API](#api)
+    - [`player.overlay()`](#playeroverlay)
+    - [`overlay.overlays`](#overlayoverlays)
+    - [`overlay.add(object|array)`](#overlayaddobjectarray)
+    - [`overlay.remove(object)`](#overlayremoveobject)
   - [Plugin Options](#plugin-options)
     - [`align`](#align)
     - [`showBackground`](#showbackground)
