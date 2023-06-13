@@ -808,6 +808,25 @@ QUnit.test('attach overlays as last child when no controls are present', functio
   );
 });
 
+QUnit.test('can get all existing overlays with the `getOverlay` fn', function(assert) {
+  assert.expect(1);
+  this.player.controls(false);
+
+  const overlay = this.player.overlay({
+    overlays: [{
+      content: 'this is the first overlay',
+      start: 'start',
+      align: 'bottom'
+    }]
+  });
+
+  this.player.trigger('start');
+
+  const overlays = overlay.getOverlays();
+
+  assert.equal(overlays[0].options_.content, 'this is the first overlay');
+});
+
 QUnit.test('can add an individual overlay using the `add` fn', function(assert) {
   assert.expect(3);
   this.player.controls(false);
@@ -882,7 +901,7 @@ QUnit.test('can remove an overlay using the `remove` fn', function(assert) {
     'bottom gets added as second last child of player'
   );
 
-  overlay.remove(overlay.overlays[0]);
+  overlay.remove(overlay.getOverlays()[0]);
 
   assert.notOk(
     this.player.$('.vjs-overlay.vjs-overlay-bottom'),

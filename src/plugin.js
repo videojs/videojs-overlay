@@ -358,6 +358,7 @@ const plugin = function(options) {
   };
 
   this.overlays_ = mapOverlays(overlays);
+
   /**
    * Adds one or more items to the existing list of overlays.
    *
@@ -399,10 +400,19 @@ const plugin = function(options) {
     }
   }
 
+  /**
+   * Gets the array of overlays used for the current video
+   *
+   * @return The array of overlay objects currently used by the plugin
+   */
+  function getOverlays() {
+    return self.overlays_;
+  }
+
   return {
     add,
     remove,
-    overlays: this.overlays_
+    getOverlays
   };
 };
 
