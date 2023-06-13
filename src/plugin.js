@@ -302,7 +302,7 @@ videojs.registerComponent('Overlay', Overlay);
  * @param    {Object} [options={}]
  */
 const plugin = function(options) {
-  const self = this;
+  const player = this;
   const settings = videojs.mergeOptions(defaults, options);
 
   // De-initialize the plugin if it already has an array of overlays.
@@ -375,7 +375,7 @@ const plugin = function(options) {
 
     const addedOverlays = mapOverlays(item);
 
-    self.overlays_ = self.overlays_.concat(addedOverlays);
+    player.overlays_ = player.overlays_.concat(addedOverlays);
 
     return addedOverlays;
   }
@@ -390,13 +390,13 @@ const plugin = function(options) {
    *
    */
   function remove(item) {
-    const index = self.overlays_.indexOf(item);
+    const index = player.overlays_.indexOf(item);
 
     if (index !== -1) {
       item.el().parentNode.removeChild(item.el());
-      self.overlays_.splice(index, 1);
+      player.overlays_.splice(index, 1);
     } else {
-      throw new Error('overlay is invalid and cannot be removed');
+      player.log.warn('overlay does not exist and cannot be removed');
     }
   }
 
@@ -405,14 +405,14 @@ const plugin = function(options) {
    *
    * @return The array of overlay objects currently used by the plugin
    */
-  function getOverlays() {
-    return self.overlays_;
+  function get() {
+    return player.overlays_;
   }
 
   return {
     add,
     remove,
-    getOverlays
+    get
   };
 };
 

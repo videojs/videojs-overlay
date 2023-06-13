@@ -54,7 +54,7 @@ There's also a [working example](https://github.com/brightcove/videojs-overlay/b
 #### `player.overlay()`
 This is the main interface and the way to initialize this plugin. It takes [an options object as input](#plugin-options).
 
-#### `overlay.getOverlays()`
+#### `overlay.get()`
 
 Returns an array of all the overlays set up for the current video.
 
@@ -79,8 +79,7 @@ var addedOverlays = overlay.add({content: "this is a new one", start: "play", en
 
 #### `overlay.remove(Object)`
 
-Removes an individual overlay from the list of overlays. Calling this method with an invalid overlay object
-throws an error.
+Removes an individual overlay from the list of overlays. Calling this method with an invalid overlay object removes nothing from the list.
 
 ```js
 var overlay = player.overlay({
@@ -92,7 +91,7 @@ var overlay = player.overlay({
     end: 'pause'
   }]
 });
-const overlayToRemove = overlay.getOverlays()[0];
+const overlayToRemove = overlay.get()[0];
 overlay.remove(overlayToRemove);
 ```
 

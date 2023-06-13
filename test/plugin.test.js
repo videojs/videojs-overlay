@@ -808,7 +808,7 @@ QUnit.test('attach overlays as last child when no controls are present', functio
   );
 });
 
-QUnit.test('can get all existing overlays with the `getOverlay` fn', function(assert) {
+QUnit.test('can get all existing overlays with the `get` fn', function(assert) {
   assert.expect(1);
   this.player.controls(false);
 
@@ -822,7 +822,7 @@ QUnit.test('can get all existing overlays with the `getOverlay` fn', function(as
 
   this.player.trigger('start');
 
-  const overlays = overlay.getOverlays();
+  const overlays = overlay.get();
 
   assert.equal(overlays[0].options_.content, 'this is the first overlay');
 });
@@ -901,7 +901,7 @@ QUnit.test('can remove an overlay using the `remove` fn', function(assert) {
     'bottom gets added as second last child of player'
   );
 
-  overlay.remove(overlay.getOverlays()[0]);
+  overlay.remove(overlay.get()[0]);
 
   assert.notOk(
     this.player.$('.vjs-overlay.vjs-overlay-bottom'),
@@ -909,7 +909,7 @@ QUnit.test('can remove an overlay using the `remove` fn', function(assert) {
   );
 });
 
-QUnit.test('`remove` fn throws an error if an invalid overlay is passed into it', function(assert) {
+QUnit.test('`remove` fn does not remove anything if an invalid overlay is passed into it', function(assert) {
   assert.expect(2);
   this.player.controls(false);
 
@@ -926,7 +926,11 @@ QUnit.test('`remove` fn throws an error if an invalid overlay is passed into it'
     'bottom gets added as last child of player'
   );
 
-  assert.throws(() => {
-    overlay.remove(undefined);
-  }, Error, 'error is thrown with an invalid overlay');
+  overlay.remove(undefined);
+
+  assert.equal(
+    this.player.$('.vjs-overlay.vjs-overlay-bottom'),
+    this.player.el().lastChild,
+    'bottom is still last child of player'
+  );
 });
