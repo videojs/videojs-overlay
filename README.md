@@ -20,7 +20,7 @@ Maintenance Status: Stable
 - [Documentation](#documentation)
   - [API](#api)
     - [`player.overlay()`](#playeroverlay)
-    - [`overlay.overlays`](#overlayoverlays)
+    - [`overlay.get()`](#overlayget)
     - [`overlay.add(object|array)`](#overlayaddobjectarray)
     - [`overlay.remove(object)`](#overlayremoveobject)
   - [Plugin Options](#plugin-options)
