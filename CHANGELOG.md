@@ -1,3 +1,10 @@
+<a name="3.1.0"></a>
+# [3.1.0](https://github.com/brightcove/videojs-overlay/compare/v3.0.0...v3.1.0) (2023-06-15)
+
+### Features
+
+* make overlays mutable (#223) ([a6c0353](https://github.com/brightcove/videojs-overlay/commit/a6c0353)), closes [#223](https://github.com/brightcove/videojs-overlay/issues/223)
+
 <a name="3.0.0"></a>
 # [3.0.0](https://github.com/brightcove/videojs-overlay/compare/v2.1.5...v3.0.0) (2022-12-16)
 
