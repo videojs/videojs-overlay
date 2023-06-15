@@ -807,3 +807,130 @@ QUnit.test('attach overlays as last child when no controls are present', functio
     'top attaches as last child of player'
   );
 });
+
+QUnit.test('can get all existing overlays with the `get` fn', function(assert) {
+  assert.expect(1);
+  this.player.controls(false);
+
+  const overlay = this.player.overlay({
+    overlays: [{
+      content: 'this is the first overlay',
+      start: 'start',
+      align: 'bottom'
+    }]
+  });
+
+  this.player.trigger('start');
+
+  const overlays = overlay.get();
+
+  assert.equal(overlays[0].options_.content, 'this is the first overlay');
+});
+
+QUnit.test('can add an individual overlay using the `add` fn', function(assert) {
+  assert.expect(3);
+  this.player.controls(false);
+
+  const overlay = this.player.overlay({
+    overlays: [{
+      start: 'start',
+      align: 'bottom'
+    }]
+  });
+
+  this.player.trigger('start');
+
+  assert.equal(
+    this.player.$('.vjs-overlay.vjs-overlay-bottom'),
+    this.player.el().lastChild,
+    'initial bottom overlay is attached as last child of player'
+  );
+
+  const addedOverlay = overlay.add({content: 'newly added overlay', start: 'start', align: 'top'});
+
+  assert.equal(addedOverlay[0].options_.content, 'newly added overlay', 'added overlay object is returned by `add` fn');
+
+  this.player.trigger('start');
+  assert.equal(
+    this.player.$('.vjs-overlay.vjs-overlay-top'),
+    this.player.el().lastChild,
+    'top gets added as last child of player'
+  );
+});
+
+QUnit.test('can add a list of overlays using the `add` fn', function(assert) {
+  assert.expect(2);
+  this.player.controls(false);
+
+  const overlay = this.player.overlay();
+
+  overlay.add([{start: 'start', align: 'top'}, {start: 'start', align: 'bottom'}]);
+
+  this.player.trigger('start');
+
+  assert.equal(
+    this.player.$('.vjs-overlay.vjs-overlay-bottom'),
+    this.player.el().lastChild,
+    'bottom gets added as last child of player'
+  );
+
+  assert.equal(
+    this.player.$('.vjs-overlay.vjs-overlay-top'),
+    this.player.el().lastChild.previousSibling,
+    'top gets added as second last child of player'
+  );
+});
+
+QUnit.test('can remove an overlay using the `remove` fn', function(assert) {
+  assert.expect(2);
+  this.player.controls(false);
+
+  const overlay = this.player.overlay({
+    overlays: [{
+      start: 'start',
+      align: 'bottom'
+    }, {
+      start: 'start',
+      align: 'top'
+    }]
+  });
+
+  assert.equal(
+    this.player.$('.vjs-overlay.vjs-overlay-bottom'),
+    this.player.el().lastChild.previousSibling,
+    'bottom gets added as second last child of player'
+  );
+
+  overlay.remove(overlay.get()[0]);
+
+  assert.notOk(
+    this.player.$('.vjs-overlay.vjs-overlay-bottom'),
+    'bottom overlay has been removed'
+  );
+});
+
+QUnit.test('`remove` fn does not remove anything if an invalid overlay is passed into it', function(assert) {
+  assert.expect(2);
+  this.player.controls(false);
+
+  const overlay = this.player.overlay({
+    overlays: [{
+      start: 'start',
+      align: 'bottom'
+    }]
+  });
+
+  assert.equal(
+    this.player.$('.vjs-overlay.vjs-overlay-bottom'),
+    this.player.el().lastChild,
+    'bottom gets added as last child of player'
+  );
+
+  overlay.remove(undefined);
+
+  assert.equal(
+    this.player.$('.vjs-overlay.vjs-overlay-bottom'),
+    this.player.el().lastChild,
+    'bottom is still last child of player'
+  );
+});

@@ -18,6 +18,11 @@ Maintenance Status: Stable
 
 - [Getting Started](#getting-started)
 - [Documentation](#documentation)
+  - [API](#api)
+    - [`player.overlay()`](#playeroverlay)
+    - [`overlay.get()`](#overlayget)
+    - [`overlay.add(object|array)`](#overlayaddobjectarray)
+    - [`overlay.remove(object)`](#overlayremoveobject)
   - [Plugin Options](#plugin-options)
     - [`align`](#align)
     - [`showBackground`](#showbackground)
@@ -44,6 +49,52 @@ Once you've added the plugin script to your page, you can use it with any video:
 There's also a [working example](https://github.com/brightcove/videojs-overlay/blob/master/index.html) of the plugin you can check out if you're having trouble.
 
 ## Documentation
+
+### API
+#### `player.overlay()`
+This is the main interface and the way to initialize this plugin. It takes [an options object as input](#plugin-options).
+
+#### `overlay.get()`
+
+Returns an array of all the overlays set up for the current video.
+
+#### `overlay.add(Object|Array)`
+
+Adds one or more overlays to the current list of overlays without replacing the current list of overlays.
+Returns a reference to the added overlays.
+
+```js
+const overlay = player.overlay({
+  content: 'Default overlay content',
+  debug: true,
+  overlays: [{
+    content: 'The video is playing!',
+    start: 'play',
+    end: 'pause'
+  }]
+});
+const addedOverlays = overlay.add({content: "this is a new one", start: "play", end: "pause"});
+```
+
+
+#### `overlay.remove(Object)`
+
+Removes an individual overlay from the list of overlays. Calling this method with an invalid overlay object removes nothing from the list.
+
+```js
+const overlay = player.overlay({
+  content: 'Default overlay content',
+  debug: true,
+  overlays: [{
+    content: 'The video is playing!',
+    start: 'play',
+    end: 'pause'
+  }]
+});
+const overlayToRemove = overlay.get()[0];
+overlay.remove(overlayToRemove);
+```
+
 
 ### Plugin Options
 

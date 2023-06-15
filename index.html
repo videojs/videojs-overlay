@@ -18,14 +18,15 @@
   <script src="dist/videojs-overlay.js"></script>
   <script>
     (function(window, videojs) {
-      var player = window.player = videojs('videojs-overlay-player');
-      player.overlay({
+      const player = window.player = videojs('videojs-overlay-player');
+      const overlay = player.overlay({
         content: 'Default overlay content',
         debug: true,
         overlays: [{
           content: 'The video is playing!',
           start: 'play',
-          end: 'pause'
+          end: 'pause',
+          align: 'bottom-right'
         }, {
           start: 0,
           end: 15,
@@ -43,6 +44,7 @@
           end: 'pause'
         }]
       });
+      overlay.add({content: "this is a new one", start: "play", end: "pause"});
     }(window, window.videojs));
   </script>
 </body>

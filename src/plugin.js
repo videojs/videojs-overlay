@@ -36,8 +36,8 @@ const isNumber = n => typeof n === 'number' && n === n;
 /**
  * Whether a value is a string with no whitespace.
  *
- * @param  {String} s
- * @return {Boolean}
+ * @param  {string} s
+ * @return {boolean}
  */
 const hasNoWhitespace = s => typeof s === 'string' && (/^\S+$/).test(s);
 
@@ -116,6 +116,7 @@ class Overlay extends Component {
 
   /**
    * Logs debug errors
+   *
    * @param  {...[type]} args [description]
    * @return {[type]}         [description]
    */
@@ -160,11 +161,11 @@ class Overlay extends Component {
   /**
    * Determine whether or not the overlay should hide.
    *
-   * @param  {Number} time
+   * @param  {number} time
    *         The current time reported by the player.
-   * @param  {String} type
+   * @param  {string} type
    *         An event type.
-   * @return {Boolean}
+   * @return {boolean}
    */
   shouldHide_(time, type) {
     const end = this.options_.end;
@@ -195,11 +196,11 @@ class Overlay extends Component {
   /**
    * Determine whether or not the overlay should show.
    *
-   * @param  {Number} time
+   * @param  {number} time
    *         The current time reported by the player.
-   * @param  {String} type
+   * @param  {string} type
    *         An event type.
-   * @return {Boolean}
+   * @return {boolean}
    */
   shouldShow_(time, type) {
     const start = this.options_.start;
@@ -301,6 +302,7 @@ videojs.registerComponent('Overlay', Overlay);
  * @param    {Object} [options={}]
  */
 const plugin = function(options) {
+  const player = this;
   const settings = videojs.mergeOptions(defaults, options);
 
   // De-initialize the plugin if it already has an array of overlays.
@@ -320,37 +322,98 @@ const plugin = function(options) {
   // because it doesn't make sense to pass it to each Overlay component.
   delete settings.overlays;
 
-  this.overlays_ = overlays.map(o => {
-    const mergeOptions = videojs.mergeOptions(settings, o);
-    const attachToControlBar = typeof mergeOptions.attachToControlBar === 'string' || mergeOptions.attachToControlBar === true;
+  const mapOverlays = (items) => {
+    return items.map(o => {
+      const mergeOptions = videojs.mergeOptions(settings, o);
+      const attachToControlBar = typeof mergeOptions.attachToControlBar === 'string' || mergeOptions.attachToControlBar === true;
 
-    if (!this.controls() || !this.controlBar) {
-      return this.addChild('overlay', mergeOptions);
-    }
-
-    if (attachToControlBar && mergeOptions.align.indexOf('bottom') !== -1) {
-      let referenceChild = this.controlBar.children()[0];
-
-      if (this.controlBar.getChild(mergeOptions.attachToControlBar) !== undefined) {
-        referenceChild = this.controlBar.getChild(mergeOptions.attachToControlBar);
+      if (!this.controls() || !this.controlBar) {
+        return this.addChild('overlay', mergeOptions);
       }
 
-      if (referenceChild) {
-        const referenceChildIndex = this.controlBar.children().indexOf(referenceChild);
-        const controlBarChild = this.controlBar.addChild('overlay', mergeOptions, referenceChildIndex);
+      if (attachToControlBar && mergeOptions.align.indexOf('bottom') !== -1) {
+        let referenceChild = this.controlBar.children()[0];
 
-        return controlBarChild;
+        if (this.controlBar.getChild(mergeOptions.attachToControlBar) !== undefined) {
+          referenceChild = this.controlBar.getChild(mergeOptions.attachToControlBar);
+        }
+
+        if (referenceChild) {
+          const referenceChildIndex = this.controlBar.children().indexOf(referenceChild);
+          const controlBarChild = this.controlBar.addChild('overlay', mergeOptions, referenceChildIndex);
+
+          return controlBarChild;
+        }
       }
+
+      const playerChild = this.addChild('overlay', mergeOptions);
+
+      this.el().insertBefore(
+        playerChild.el(),
+        this.controlBar.el()
+      );
+
+      return playerChild;
+    });
+  };
+
+  this.overlays_ = mapOverlays(overlays);
+
+  /**
+   * Adds one or more items to the existing list of overlays.
+   *
+   * @param {Object|Array} item
+   *        An item (or an array of items) to be added as overlay/s
+   *
+   * @return {Array[Overlay]}
+   *         The array of overlay objects that were added
+   */
+  function add(item) {
+    if (!Array.isArray(item)) {
+      item = [item];
     }
 
-    const playerChild = this.addChild('overlay', mergeOptions);
+    const addedOverlays = mapOverlays(item);
 
-    this.el().insertBefore(
-      playerChild.el(),
-      this.controlBar.el()
-    );
-    return playerChild;
-  });
+    player.overlays_ = player.overlays_.concat(addedOverlays);
+
+    return addedOverlays;
+  }
+
+  /**
+   *
+   * @param {Overlay} item
+   *        An item to be removed from the array of overlays
+   *
+   * @throws {Error}
+   *        Item to remove must be present in the array of overlays
+   *
+   */
+  function remove(item) {
+    const index = player.overlays_.indexOf(item);
+
+    if (index !== -1) {
+      item.el().parentNode.removeChild(item.el());
+      player.overlays_.splice(index, 1);
+    } else {
+      player.log.warn('overlay does not exist and cannot be removed');
+    }
+  }
+
+  /**
+   * Gets the array of overlays used for the current video
+   *
+   * @return The array of overlay objects currently used by the plugin
+   */
+  function get() {
+    return player.overlays_;
+  }
+
+  return {
+    add,
+    remove,
+    get
+  };
 };
 
 plugin.VERSION = VERSION;
