@@ -18,8 +18,8 @@
   <script src="dist/videojs-overlay.js"></script>
   <script>
     (function(window, videojs) {
-      var player = window.player = videojs('videojs-overlay-player');
-      var overlay = player.overlay({
+      const player = window.player = videojs('videojs-overlay-player');
+      const overlay = player.overlay({
         content: 'Default overlay content',
         debug: true,
         overlays: [{

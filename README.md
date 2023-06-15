@@ -64,7 +64,7 @@ Adds one or more overlays to the current list of overlays without replacing the 
 Returns a reference to the added overlays.
 
 ```js
-var overlay = player.overlay({
+const overlay = player.overlay({
   content: 'Default overlay content',
   debug: true,
   overlays: [{
@@ -73,7 +73,7 @@ var overlay = player.overlay({
     end: 'pause'
   }]
 });
-var addedOverlays = overlay.add({content: "this is a new one", start: "play", end: "pause"});
+const addedOverlays = overlay.add({content: "this is a new one", start: "play", end: "pause"});
 ```
 
 
@@ -82,7 +82,7 @@ var addedOverlays = overlay.add({content: "this is a new one", start: "play", en
 Removes an individual overlay from the list of overlays. Calling this method with an invalid overlay object removes nothing from the list.
 
 ```js
-var overlay = player.overlay({
+const overlay = player.overlay({
   content: 'Default overlay content',
   debug: true,
   overlays: [{
