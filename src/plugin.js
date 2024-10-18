@@ -1,8 +1,6 @@
 import videojs from 'video.js';
 import initOverlayComponent from './overlay-component';
 
-initOverlayComponent(videojs);
-
 const Plugin = videojs.getPlugin('plugin');
 
 const defaults = {
@@ -167,5 +165,7 @@ class OverlayPlugin extends Plugin {
     });
   }
 }
+
+export { initOverlayComponent };
 
 export default OverlayPlugin;
