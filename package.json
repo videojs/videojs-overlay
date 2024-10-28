@@ -81,6 +81,10 @@
     "test/"
   ],
   "exports": {
+    ".": {
+      "require": "./dist/videojs-overlay.cjs.js",
+      "import": "./dist/videojs-overlay.es.js"
+    },
     "./plugin-only": {
       "require": "./dist/videojs-overlay.plugin.js",
       "import": "./dist/videojs-overlay.plugin.js"
