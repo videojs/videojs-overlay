@@ -1,3 +1,14 @@
+<a name="4.0.0"></a>
+# [4.0.0](https://github.com/brightcove/videojs-overlay/compare/v3.1.0...v4.0.0) (2024-10-28)
+
+### Features
+
+* move to advanced plugin and add reset API (#224) ([8524c38](https://github.com/brightcove/videojs-overlay/commit/8524c38)), closes [#224](https://github.com/brightcove/videojs-overlay/issues/224)
+
+### Bug Fixes
+
+* package json export for publish (#225) ([944acd6](https://github.com/brightcove/videojs-overlay/commit/944acd6)), closes [#225](https://github.com/brightcove/videojs-overlay/issues/225)
+
 <a name="3.1.0"></a>
 # [3.1.0](https://github.com/brightcove/videojs-overlay/compare/v3.0.0...v3.1.0) (2023-06-15)
 
